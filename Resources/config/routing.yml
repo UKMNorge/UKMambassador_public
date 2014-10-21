@@ -1,0 +1,3 @@
+ukm_amb_homepage:
+    path:     /
+    defaults: { _controller: UKMAmbBundle:Welcome:index }

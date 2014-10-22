@@ -1,20 +1,32 @@
 <?php
 
-namespace UKMNorge\AmbassadorBundle\Controller;
+namespace UKMNorge\AmbassadorBundle\Services;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use stdClass;
+use Exception;
+use SimpleXMLElement;
+use UKMCURL;
 
-class WelcomeController extends Controller
+class WordpressThemeService
 {
-    public function indexAction( )
-    {
-    	$data = $this->_prepareThemeData();
-    	
-        return $this->render('UKMAmbBundle:Welcome:index.html.twig', $data );
+    /**
+     *
+     * @var ContainerInterface 
+     */
+    protected $container;
+
+	/**
+	 * 
+	 * Class constructor
+	 * @param ContainerInterface
+	 *
+	*/
+    public function __construct(ContainerInterface $container) {
+        $this->container = $container;
     }
     
-    private function _prepareThemeData() {
+    public function prepareThemeData() {
 	    $this->includePath = dirname(__DIR__).'/';
 	    
 	    $DATA = [];
@@ -24,7 +36,7 @@ class WelcomeController extends Controller
     	$DATA['url'] = $url;
     	
     	$SEO = new stdClass();
-    	$SEO->canonical 	= $this->generateUrl('ukm_amb_homepage');
+    	$SEO->canonical 	= $this->container->get('router')->generate('ukm_amb_homepage');
     	$SEO->description 	= 'En UKM-ambassadør snakker varmt om UKM, og oppfordrer andre til å delta';
     	$SEO->author		= 'http://ukm.no/blog/author/ukm-norge/';
     	$SEO->site_name		= 'UKM for ambassadører';

@@ -1,4 +1,15 @@
 services:
-#    ukm_amb.example:
-#        class: UKMNorge\AmbassadorBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    ukm_amb.wordpressCache:
+        class: UKMNorge\AmbassadorBundle\Services\WordpressCacheService
+        arguments:
+            - @service_container
+
+    ukm_amb.wordpressTheme:
+        class: UKMNorge\AmbassadorBundle\Services\WordpressThemeService
+        arguments:
+            - @service_container
+
+    ukm_amb.ambassador:
+        class: UKMNorge\AmbassadorBundle\Services\AmbassadorService
+        arguments:
+            - @service_container

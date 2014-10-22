@@ -1,0 +1,26 @@
+{% extends "UKMAmbBundle:Design:layout.html.twig" %}
+
+{% block jumbo_header %}
+	Bli ambassadør
+{% endblock %}
+{% block jumbo_content %}
+	En feil har oppstått!
+{% endblock %}
+
+{% block content %}
+	<div class="col-xs-12">
+		<p class="lead">
+			Beklager, for å kunne vise denne siden må du være logget inn med facebook.
+		</p>
+
+		<p>
+			Du kan forsøke å logge inn på nytt:
+		</p>
+		<p>
+			<a href="{{ url('hwi_facebook_login') }}" class="btn btn-sm btn-success">Logg inn med facebook</a>
+		</p>
+
+		<p>&nbsp;</p>
+	</div>
+	
+{% endblock %}

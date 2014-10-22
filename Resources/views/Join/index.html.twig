@@ -1,0 +1,30 @@
+{% extends "UKMAmbBundle:Design:layout.html.twig" %}
+
+{% block jumbo_header %}
+	{{ homepage.title }}
+{% endblock %}
+{% block jumbo_content %}
+{% endblock %}
+
+{% block content %}
+	<div class="col-xs-12">
+		{{ homepage.content|raw }}
+	</div>
+	
+	<div class="col-xs-12 col-sm-4 col-sm-push-1">
+		<h3>Jeg har fått SMS</h3>
+		<form method="post" action="{{ url('ukm_amb_join_phone') }}">
+			<input type="tel" name="mobil" id="mobil" placeholder="Skriv inn mobilnummer..." />
+			<br />
+			<input class="btn btn-sm btn-success" type="submit" value="Registrer meg" />
+		</form>
+	</div>
+
+	<div class="col-xs-12 col-sm-4 col-sm-push-2">
+		<h3>Jeg har ikke fått SMS</h3>
+		<p>For å bli ambassadør må du være invitert av din lokalkontakt</p>
+		<p>Du kan gjerne sende lokalkontakten din en melding om at du vil være ambassadør</p>
+		<input class="btn btn-sm btn-success" type="button" value="Finn min lokalkontakt" />
+	</div>
+	
+{% endblock %}

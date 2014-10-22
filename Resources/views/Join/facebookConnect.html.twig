@@ -1,0 +1,32 @@
+{% extends "UKMAmbBundle:Design:layout.html.twig" %}
+
+{% block jumbo_header %}
+	Bli ambassadør
+{% endblock %}
+{% block jumbo_content %}
+	Logg inn med facebook
+{% endblock %}
+
+{% block content %}
+	<div class="col-xs-12">
+		<p class="lead">
+			For å være ambassadør må du logge inn med facebook.
+		</p>
+		<p>
+			<a href="{{ url('hwi_facebook_login') }}" class="btn btn-sm btn-success">Logg inn med facebook</a>
+		</p>
+
+		<p>&nbsp;</p>
+
+		<h4>Hvorfor logge inn med facebook?</h4>
+		<p>
+			En viktig del av å være ambassadør er å ha kontakt med andre ambassadører.
+		</p>
+		<h4>Det er trygt</h4>
+		<p>
+			Vi gir aldri din facebook-informasjon videre til noen andre. Vi kommer heller aldri til å poste noe på tidslinjen din.
+		</p>
+
+	</div>
+	
+{% endblock %}

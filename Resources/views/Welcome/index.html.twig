@@ -1,28 +1,26 @@
 {% extends "UKMAmbBundle:Design:layout.html.twig" %}
 
-
 {% block content %}
-
-	<div class="col-xs-12 col-md-8">
-		<h2>Hva er en ambassadør</h2>
-		<p class="lead">En UKM-ambassadør snakker varmt om UKM, og anbefaler andre å bli med på UKM</p>
-		<p>Høres det veldig enkelt ut? Vi har samlet litt mer info på denne siden:</p>
-	</div>
-
-	<div class="col-xs-12 col-md-4">
-		<div class="col-xs-12">
+	<div class="col-xs-12 col-md-4 pull-right">
+		<div>
 			<h2>Logg inn</h2>
 			<p>Hvis du er registrert UKM-ambassadør kan du logge inn til din ambassadørside her</p>
 			<p>
-				<a href="#" class="btn btn-sm btn-primary">Logg inn med facebook</a>
+				<a href="{{ url('hwi_facebook_login') }}" class="btn btn-sm btn-block btn-success">Logg inn med facebook</a>
 			</p>
 		</div>
 		
-		<div class="col-xs-12 col-md-4">
+		<div>
 			<h2>Bli ambassadør</h2>
+			<p>Vi ønsker alltid flere ambassadører, les mer og kom i gang her!</p>
 			<p>
-				<a href="#" class="btn btn-sm btn-primary">Les mer om hvordan du kan bli ambassadør</a>
+				<a href="{{ url('ukm_amb_join_homepage') }}" class="btn btn-sm btn-block btn-success">Bli ambassadør</a>
 			</p>
 		</div>
+		<p>&nbsp;</p>
+	</div>
+	<div class="col-xs-12 col-md-8">
+		<h2>{{ homepage.title }}</h2>
+		{{ homepage.content|raw }}
 	</div>
 {% endblock %}

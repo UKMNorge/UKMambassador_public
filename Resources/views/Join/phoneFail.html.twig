@@ -1,0 +1,32 @@
+{% extends "UKMAmbBundle:Design:layout.html.twig" %}
+
+{% block jumbo_header %}
+	Bli ambassadør
+{% endblock %}
+{% block jumbo_content %}
+	Mobilnummer ikke funnet!
+{% endblock %}
+
+{% block content %}
+	<div class="col-xs-12">
+		<p class="lead">
+			Beklager, vi finner ingen invitasjon knyttet til dette nummeret ({{phone}})
+		</p>
+		<p>
+			<strong>Har du gjort alt dette?</strong>
+			<ol>
+				<li>Fått en SMS med invitasjon til å bli ambassadør</li>
+				<li>Sendt "UKM AMB JA" til 1963?</li>
+				<li>Fått en info-SMS</li>
+			</ol>
+			Hvis du ikke har vært gjennom disse tre stegene vil du ikke kunne registrere deg på denne siden.
+		</p>
+		<p>
+			<strong>Har du ikke fått invitasjon?</strong>
+		</p>
+		<p>
+			<a href="http://ukm.no/derdubor/" class="btn btn-sm btn-success">Be lokalkontakten om invitasjon</a>
+		</p>
+	</div>
+	
+{% endblock %}

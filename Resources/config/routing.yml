@@ -1,3 +1,31 @@
 ukm_amb_homepage:
     path:     /
     defaults: { _controller: UKMAmbBundle:Welcome:index }
+
+ukm_amb_profile_home:
+    path:     /{ID}/
+    defaults: { _controller: UKMAmbBundle:Profile:index }
+    requirements:
+        ID: ([0-9]{0,11})
+
+
+ukm_amb_join_homepage:
+    path:	/bli-ambassador/
+    defaults: { _controller: UKMAmbBundle:Join:index }
+   
+ukm_amb_join_phone:
+    path: /bli-ambassador/mobil/
+    defaults: { _controller: UKMAmbBundle:Join:phone }
+    
+ukm_amb_join_register:
+    path: /bli-ambassador/connect/
+    defaults: { _controller: UKMAmbBundle:Join:connect }
+    
+ukm_amb_join_address:
+    path: /bli-ambassador/velkomstpakke/
+    defaults: { _controller: UKMAmbBundle:Join:address }
+    
+ukm_amb_join_complete:
+    path: /bli-ambassador/send_velkomstpakke/
+    defaults: { _controller: UKMAmbBundle:Join:complete }
+    methods: [POST]

@@ -27,12 +27,15 @@ class WordpressThemeService
     }
     
     public function prepareThemeData() {
+    	require_once('UKMconfig.inc.php');
+
 	    $this->includePath = dirname(__DIR__).'/';
 	    
 	    $DATA = [];
 	    
     	$url = new stdClass();
     	$url->theme_dir = 'http://ukm.no/wp-content/themes/UKMresponsive/';
+    	$url->site	= 'http://ambassador.'. UKM_HOSTNAME .'/';
     	$DATA['url'] = $url;
     	
     	$SEO = new stdClass();
@@ -48,15 +51,18 @@ class WordpressThemeService
     	
     	$DATA['SEO'] = $SEO;
     	
-    	require_once('UKMconfig.inc.php');
     	define('CURRENT_UKM_DOMAIN', 'http://'. UKM_HOSTNAME);
 		require_once($this->includePath. 'Resources/UKMresponsive/nav_top.controller.php');
 		
 		$jumbo = new stdClass();
-		$jumbo->header 		= 'Logg inn';
-		$jumbo->content		= 'UKM for ambassadører';
+		$jumbo->header 		= 'Ambassadørsiden';
+		$jumbo->content		= 'Logg inn';
 		$DATA['jumbo'] = $jumbo;
 		
+		$placeholder = new stdClass();
+		$placeholder->post = 'http://grafikk.ukm.no/placeholder/post_placeholder.png';
+		$DATA['placeholder'] = $placeholder;
+
 		return $DATA;
     }
 }

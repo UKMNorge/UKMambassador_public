@@ -1,9 +1,68 @@
 {% extends "UKMAmbBundle:Design:layout.html.twig" %}
 
+{% block jumbo_header %}
+	Ambassadørsiden
+{% endblock %}
+{% block jumbo_content %}
+	{{ ambassador.getFirstname() }} {{ ambassador.getLastname() }}
+{% endblock %}
+
 {% block content %}
-	<div class="">
-		<h2>Profilside ambassadør</h2>
+	<div class="row post_top">
+		<div class="hidden-xs hidden-sm col-md-7">
+			<a href="{{posts[0].url}}">
+				<div class="grid_post_image" style="background-image: url('{{posts[0].image.url}}');"></div>
+			</a>
+		</div>
 		
-		<p>Switch mellom public / editmode avhengig av innlogget brukers status</p>
+		<div id="infosquare" class="col-xs-12 col-md-5">
+			<div class="profile">
+				<img src="{{ ambassador.getImage() }}" class="pull-left img img-circle" width="80" style="margin-right: 15px; margin-top: -4px;" />
+				<strong>{{ ambassador.getFirstname() }} {{ ambassador.getLastname() }}</strong>
+				<br />
+				Ambassadør {{ ambassador.getId() }} <br />
+				<i>
+					<a href="http://ukm.no/pl{{ ambassador.getPlid() }}/" target="_blank">{{ ambassador.getMonstringName() }}</a>
+				</i>
+			</div>
+			
+			<div class="">
+	        	<ol>
+				{% for nav in page_nav %}
+					{% embed "UKMAmbBundle:Design:nav.html.twig" %}{% endembed %}
+				{% endfor %}
+				</ol>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="col-xs-12 hidden-xs hidden-sm post_top">		
+			<a href="{{posts[0].url}}"><h2>{{posts[0].title|raw}}</h2></a>
+			<p class="lead">{{posts[0].lead|raw}}</p>
+			<a href="{{posts[0].url}}">les mer</a>
+		</div>
 	</div>
+	
+	
+	<div class="row">
+		<div class="visible-xs visible-sm hidden-md hidden-lg col-xs-12">
+				{% embed "UKMAmbBundle:Wordpress:grid_element.html.twig" with {'post': posts[0]} %}{% endembed %}
+		</div>
+	</div>
+
+	<div class="separator_line"></div>
+	
+	<div class="row">
+		{% for post in posts|slice(1) %}
+			<div class="news col-xs-6 col-md-4">
+				{% embed "UKMAmbBundle:Wordpress:grid_element.html.twig" with {'post': post} %}{% endembed %}
+			</div>
+			
+			{% if loop.index is divisibleby(3) %}
+				<div class="clearfix visible-md visible-lg"></div>
+			{% elseif loop.index is divisibleby(2) %}
+				<div class="clearfix visible-xs visible-sm"></div>
+			{% endif %}
+		{% endfor %}
+	</div>
+
 {% endblock %}

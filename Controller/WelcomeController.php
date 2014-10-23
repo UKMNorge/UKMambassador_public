@@ -42,9 +42,13 @@ class WelcomeController extends Controller
 	   		$current_user = $this->get('security.context')->getToken()->getUser();
 			
 			$ambassadorObject = $ambassador->get( $current_user->getFacebookId() );
+			
+		    $session = new Session();  
+			$phone = $session->get('UKMamb_phone');
+
 			if( $ambassadorObject ) {
-#				return $this->redirect( $this->generateUrl( 'ukm_amb_profile_homepage', array('ID' => $ambassadorObject->getId() ) ) );
-			} else {
+				return $this->redirect( $this->generateUrl( 'ukm_amb_profile_homepage' ) ); #, array('ID' => $ambassadorObject->getId() ) ) );
+			} elseif( !empty( $phone ) ) {
 				return $this->redirect( $this->generateUrl( 'ukm_amb_join_register' ) );
 			}
 		}

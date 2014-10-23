@@ -2,12 +2,9 @@ ukm_amb_homepage:
     path:     /
     defaults: { _controller: UKMAmbBundle:Welcome:index }
 
-ukm_amb_profile_home:
-    path:     /{ID}/
+ukm_amb_profile_homepage:
+    path:     /profil/
     defaults: { _controller: UKMAmbBundle:Profile:index }
-    requirements:
-        ID: ([0-9]{0,11})
-
 
 ukm_amb_join_homepage:
     path:	/bli-ambassador/
@@ -29,3 +26,12 @@ ukm_amb_join_complete:
     path: /bli-ambassador/send_velkomstpakke/
     defaults: { _controller: UKMAmbBundle:Join:complete }
     methods: [POST]
+    
+    
+wordpress_page:
+    path: /side/{id}/
+    defaults: { _controller: UKMAmbBundle:Wordpress:page }
+    
+wordpress_post:
+    path: /innlegg/{year}/{month}/{date}/{id}/
+    defaults: { _controller: UKMAmbBundle:Wordpress:post }

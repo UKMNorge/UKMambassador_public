@@ -17,12 +17,17 @@ class WordpressCacheService
     protected $container;
 
 	private $baseUrl		= 'http://ukm.no/ambassador/';
+	private $categoryBaseUrl= 'http://ukm.no/ambassador/kategori/';
 	private $feedUrl		= 'http://ukm.no/ambassador/feed/';
 	private $feedFile		= '/tmp/ambassador/feed.xml';
 	
 	private $tempDir		= '/tmp/ambassador/';
 	private $postDataDir	= '/tmp/ambassador/postData/';
+	private $categoryDataDir= '/tmp/ambassador/category/';
 	private $lastBuildFile	= '/tmp/ambassador/lastbuild.txt';
+
+	private $feedXML		= false;
+	private $feedRaw		= false;
 
 	/**
 	 * 
@@ -35,147 +40,324 @@ class WordpressCacheService
         $this->container = $container;
     }
 	
-	
+	/**
+	 *
+	 * Return cached object of param URL
+	 * If not in cache, reload whole cache
+	 *
+	 * @param String URL
+	 *
+	 * @return WPOO_Post
+	 */
 	public function load( $url ) {
-		if( $this->_cacheExist( $url ) ) {
-			return $this->_wordpressFromCache( $url );
-		} else {
-			$this->_wordpressDataLoad();
+		if( !$this->_cacheExist( $url ) ) {
+			$this->_wpDataLoad();
 		}
-		return $this->_wordpressFromCache( $url );
+		return $this->_wpFromCache( $url );
+	}
+
+	/**
+	 * Get list of all posts in gicen category
+	 *
+	 * @param category URL
+	 *
+	 * @return Array of WPOO_Posts
+	 */
+	public function getCategory( $category ) {
+		$list = [];
+		
+		if( !file_exists( $this->categoryDataDir . $category . '.list' ) ) {
+			$this->addCategory( $category );
+		}
+		
+		$handle = @fopen($this->categoryDataDir . $category . '.list', "r");
+		if ($handle) {
+		    while (( $post = fgets($handle, 4096)) !== false) {
+		        $list[] = $this->load( $post );
+		    }
+		    fclose($handle);
+		}
+		return $list;
 	}
 	
-    private function _wordpressFromCache( $url ) {
-		list($file, $metafile) = $this->_wordpressFileNames( $url );       	
-
-       	if( !$this->_cacheExist( $url ) ) {
-	       	$emptyClass = new stdClass();
-	       	$emptyClass->title = '';
-	       	$emptyClass->link = '';
-	       	$emptyClass->pubDate = '';
-	       	$emptyClass->content = '';
-	       	return $emptyClass;
-       	}
-       	
-       	$page	 		= json_decode( file_get_contents( $this->postDataDir . $metafile ) );
-       	$page->content	= file_get_contents( $this->postDataDir . $file );
-       	
-       	return $page;
-    }
-    
-    private function _cacheExist( $url ) {
-    	if( $this->_cacheIsOutdated() )
-    		return false;
-    		
-		list($file, $metafile) = $this->_wordpressFileNames( $url );       	
-		
-		if( $file == false || $metafile == false )
-			return false;
-		
-	    return file_exists( $this->postDataDir.$metafile ) && file_exists( $this->postDataDir.$file );
-    }
-    
-    private function _cacheIsOutdated() {
-		## DEVELOPMENT MODE
-    	return false;
-    	## DEVELOPMENT MODE
-		require_once('UKM/curl.class.php');
-		$UKMCURL = new UKMCURL();
-		$UKMCURL->timeout(10);
-		$xmlString = $UKMCURL->request( $this->feedUrl );
-		$feed = new SimpleXMLElement( $xmlString );
-
-    	// LOG LAST BUILD DATE
-	    $lastBuildDate 	= date('Ymd-His', strtotime( $feed->channel->lastBuildDate ) );
-		if( file_exists( $this->lastBuildFile ) ) {
-		    $lastBuild		= file_get_contents( $this->lastBuildFile );
-		    return $lastBuildDate != $lastBuild;
+	/** 
+	 * Add a new category to list of categories to be cached (and cache)
+	 *
+	 * @return void
+	 */
+	public function addCategory( $category ) {
+		// Reload whole cache if necesseary
+		if( $this->_cacheIsOutdated() ) {
+			$this->_wpDataLoad();
 		}
-		return $true;
-    }
-    
-    private function _wordpressFileNames( $url ) {
-       	$file 		= $this->_wordpressCacheName( $this->baseUrl. $url );
-       	$metafile 	= str_replace('.html', '.meta.html', $file );
-
-	   	return array($file, $metafile);
-    }
-    
-	private function _wordpressDataLoad() {
-		$this->_wordpressDataDependencies();
+		
+		// Load and cache new category
+		$this->_wpBuildCategory( $category );
+	}
+	
+	/**
+	 * Initiate load of feed, posts, pages and categories from RSS
+	 * Write feed data to file
+	 *
+	 * @return void
+	 */
+	private function _wpDataLoad() {
+		$this->_wpDataDependencies();
 		
 		ignore_user_abort(true);
 		set_time_limit(60);
 
-		require_once('UKM/curl.class.php');
-		$UKMCURL = new UKMCURL();
-		$UKMCURL->timeout(10);
-		$xmlString = $UKMCURL->request( $this->feedUrl );
+		$feed = $this->_getFeed();
 		
-		if( $xmlString !== false ) {
+		if( $this->_getFeedRaw() !== false ) {
 			// WRITE FEED DATA
 			$fh = fopen( $this->feedFile, 'w' );
-			fwrite( $fh, $xmlString );
+			fwrite( $fh, $this->_getFeedRaw() );
 			fclose( $fh );
-
-			$feed = new SimpleXMLElement( $xmlString );
-			$lastBuildDate 	= date('Ymd-His', strtotime( $feed->channel->lastBuildDate ) );
-					    
-		    if( $this->_cacheIsOutdated() ) {
-			    $this->_wordpressDataBuild( $lastBuildDate, $feed );
-		    }
+			
+			$this->_calcLastBuildDate();
+		    $this->_wpDataBuild( );
 		}
 	}
 	
-	private function _wordpressDataBuild( $lastBuildDate, $feed ) {
-		// Write build data
+	/**
+	 * Load or return loaded XML-feed
+	 *
+	 * @return simpleXMLObject $feedXML
+	 */
+	private function _getFeed() {
+		if( !$this->feedXML ) {
+			require_once('UKM/curl.class.php');
+			$curl = new UKMCURL();
+			$curl->timeout(15);
+			
+			$this->feedRaw = $curl->request( $this->feedUrl );
+			$this->feedXML = new SimpleXMLElement( $this->feedRaw );
+		}
+		return $this->feedXML;
+	}
+	
+	/**
+	 * Load or return loaded Feed raw-data (HTTP Response string)
+	 *
+	 * return String $feedRaw;
+	 */
+	private function _getFeedRaw() {
+		if( !$this->feedRaw )
+			$this->_getFeed();
+
+		return $this->feedRaw;
+	}
+	
+	/**
+	 * Find lastBuildDate by file or feed data
+	 *
+	 * @return String $lastBuildDate
+	 */
+	private function _getLastBuildDate() {
+		if( file_exists( $this->lastBuildFile ) ) {
+			return file_get_contents( $this->lastBuildFile );
+		} else {
+			return $this->_calcLastBuildDate( );
+		}
+	}
+	
+	/** 
+	 * Caclulate and write lastBuildDate from feed data
+	 *
+	 * @return String $lastBuildDate
+	 */
+	private function _calcLastBuildDate( ) {
+		$feed = $this->_getFeed();
+		
+		$lastBuildDate 	= date('Ymd-His', strtotime( $feed->channel->lastBuildDate ) );
+		
 		$fh = fopen( $this->lastBuildFile, 'w');
 		fwrite( $fh, $lastBuildDate );    
 		fclose( $fh );
-		    
+		
+		return $lastBuildDate;
+	}
+
+	/**
+	 * Actually load posts, pages and categories from WP to cache
+	 *
+	 * @return void
+	 */
+	private function _wpDataBuild( ) {
+		$this->_wpClearPostDataCache();
+		
+		$feed = $this->_getFeed();
+		// Loop and cache posts and pages as HTML
+	    $posts = $feed->channel->item;
+	    foreach( $posts as $post ) {
+			# Calc cache name
+			$file = $this->_wpCacheName( $post->link );
+			# Load Object from UKM.no
+			$content = $this->_loadWPOO_Post( $post->link );
+			# Write object to file
+			$fh = fopen(  $this->postDataDir . $file, 'w' );
+			fwrite( $fh, $content );
+			fclose( $fh );
+	    }
+		$this->_wpLoadCategories();	    
+	}
+	
+	/**
+	 * Delete all files in postData-directory
+	 *
+	 * @return void
+	 */
+	private function _wpClearPostDataCache() {
 		// Remove old cache
 		foreach (scandir( $this->postDataDir ) as $item) {
 		    if ($item == '.' || $item == '..') continue;
 		    unlink( $this->postDataDir .$item);
 		}
-		
-	    $posts = $feed->channel->item;
-		
-		// Loop and cache posts and pages as HTML
-	    foreach( $posts as $post ) {
-			$file = $this->_wordpressCacheName( $post->link, $lastBuildDate );
-
-			require_once('UKM/curl.class.php');
-			$curl = new UKMCURL();
-			$curl->timeout(10);
-			$content = $curl->request( $post->link.'?exportContent=true' );
-			
-			// Write page content to cache file
-			$fh = fopen(  $this->postDataDir . $file, 'w' );
-			fwrite( $fh, $content );
-			fclose( $fh );
-
-			// Write page metadata to cache file
-			$metadata = array('title' => (string) $post->title, 'link' => (string) $post->link, 'pubDate' => (string) $post->pubDate );
-			$fh = fopen(  $this->postDataDir . str_replace('.html', '.meta.html', $file), 'w' );
-			fwrite( $fh, json_encode( $metadata ) );
-			fclose( $fh );
-	    }
 	}
-	
-	private function _wordpressCacheName( $link, $build=false ) {
-		if( !file_exists( $this->lastBuildFile) )
-			return false;
 
-		if( !$build )
-			$build = file_get_contents($this->lastBuildFile);
-
-		return 'B'.$build .'_'
-				  . str_replace(array( str_replace('feed/','', $this->feedUrl), '/'), array('','-'), rtrim( $link, '/') )
+	/**
+	 * Calculate cache filename of given link
+	 *
+	 * @return String $filename
+	 */
+	private function _wpCacheName( $link ) {
+		return 'B'. $this->_getLastBuildDate() .'_'
+				  . str_replace(array( str_replace('feed/','', $this->feedUrl), '/'), 
+				  				array('','-'),
+				  				rtrim( rtrim( $link ), '/') )
 				  . '.html';
 	}
+
+	/**
+	 * Load WPOO_Post-object from UKM.no by exportContent
+	 * 
+	 * @return JSON-String $curlresult
+	 */
+	private function _loadWPOO_Post( $link ) {
+		require_once('UKM/curl.class.php');
+		$curl = new UKMCURL();
+		$curl->timeout(10);
+		$curl->request( $link . '?exportContent=true' );
+		
+		return $curl->result;
+	}
 	
-	private function _wordpressDataDependencies() {
+	/**
+	 * Init reload of all category lists
+	 *
+	 * @return void
+	 */
+	private function _wpLoadCategories() {
+	    // Reload all categories
+   		foreach (scandir( $this->categoryDataDir ) as $item) {
+		    if ($item == '.' || $item == '..') continue;
+		    $this->_wpBuildCategory( str_replace('.list','', $item) );
+		}
+	}
+
+	/**
+	 * Load and cache given category list of posts
+	 *
+	 * return void
+	 */
+	private function _wpBuildCategory( $category ) {
+		$this->_wpDataDependencies();
+		
+		require_once('UKM/curl.class.php');
+		$curl = new UKMCURL();
+		$curl->timeout(10);
+
+		$xmlString = $curl->request( $this->categoryBaseUrl . $category .'/feed/' );
+		$feed = new SimpleXMLElement( $xmlString );
+		
+		if( $xmlString !== false ) {
+			$fh = fopen( $this->categoryDataDir . $category . '.list', 'w');
+		    $posts = $feed->channel->item;
+		    foreach( $posts as $post ) {
+				fwrite( $fh, $post->link ."\r\n" );
+			}
+			fclose( $fh );
+		}
+	}
+    
+    /**
+     * Is cache outdated?
+     * True if:
+     *  - file is deleted (by wordpress)
+     *  - date in file and feed differs
+     *
+     * @return boolean $outdated;
+     */
+    private function _cacheIsOutdated() {
+		if( !file_exists( $this->lastBuildFile ) ) {
+			return true;
+		}
+
+		# APP DEVELOPMENT 		
+		return false;
+
+		$feed 			= $this->_getFeed();	
+	    $lastBuild		= file_get_contents( $this->lastBuildFile );
+	    $lastBuildDate 	= date('Ymd-His', strtotime( $feed->channel->lastBuildDate ) );
+	    
+	    return $lastBuildDate != $lastBuild;
+    }
+
+	/**
+	 * Is requested file cached?
+	 *
+	 * @return boolean cachefile_exists
+	 */
+    private function _cacheExist( $url ) {
+    	if( $this->_cacheIsOutdated() )
+    		return false;
+    		
+		$file = $this->_wpCacheName( $url );       	
+		
+		// SHOULD SOMEHOW CONFIRM REQUESTED FILE IS NOT GENERIC PATH (missing file + lastbuild @ wpCacheName?)	
+	    return file_exists( $this->postDataDir.$file );
+    }
+
+
+	/**
+	 * Load WPOO_Post from cache file
+	 * 
+	 * @param url ID
+	 *
+	 * @return WPOO_Post Object
+	 */
+    private function _wpFromCache( $url ) {
+		$file = $this->_wpCacheName( $url );       	
+
+       	if( !$this->_cacheExist( $url ) ) {
+	       	$emptyClass = new stdClass();
+	       	$emptyClass->title = '404 - Siden ikke funnet';
+	       	$emptyClass->url = '';
+	       	$emptyClass->pubDate = '';
+	       	$emptyClass->content = 'Beklager, finner ikke siden!';
+	       	return $emptyClass;
+       	}
+       	
+       	$wpoo_post	= json_decode( file_get_contents( $this->postDataDir . $file ) );
+
+       	$postDate 	= strtotime( $wpoo_post->raw->post_date );
+       	$linkData = array( 	'year' 	=> date('Y', $postDate), 
+       						'month' => date('m', $postDate), 
+       						'date' 	=> date('d', $postDate), 
+       						'id'	=> $wpoo_post->raw->post_name
+       					  );
+
+       	$wpoo_post->url = $this->container->get('router')->generate( 'wordpress_post', $linkData );
+
+       	return $wpoo_post;
+    }
+    
+        
+
+	
+	
+	private function _wpDataDependencies() {
 		if( !file_exists( dirname( $this->tempDir ) ) ) {
 			try {
 				mkdir( dirname( $this->tempDir ) );
@@ -197,6 +379,14 @@ class WordpressCacheService
 				mkdir( $this->postDataDir );
 			} catch ( Exception $e ) {
 				throw new Exception('Kunne ikke aksessere temp/ambassadør/post data. Kontakt UKM Norge!');
+			}
+		}
+
+		if( !file_exists( $this->categoryDataDir ) ) {
+			try {
+				mkdir( $this->categoryDataDir );
+			} catch ( Exception $e ) {
+				throw new Exception('Kunne ikke aksessere temp/ambassadør/kategori data. Kontakt UKM Norge!');
 			}
 		}
 	}

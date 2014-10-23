@@ -1,0 +1,12 @@
+{% extends "UKMAmbBundle:Design:layout.html.twig" %}
+
+{% block jumbo_content %}{{ page.title }}{% endblock %}
+
+{% block content %}
+	{% embed "UKMAmbBundle:Design:backtohome.html.twig" %}{% endembed %}
+	<p>&nbsp;</p>
+	
+	<div class="col-xs-12">
+		{{ page.content|raw }}
+	</div>
+{% endblock %}

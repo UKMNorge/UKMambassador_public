@@ -59,6 +59,7 @@
         {% endif %}
 		<style type="text/css">{% block additional_css %}{% endblock %}</style>
 		<script type="text/javascript">{% block additional_js %}{% endblock %}</script>
+		<title>{% block HTMLtitle %}{{SEO.title|raw}}{% endblock %}</title>
 	</head>
 	<body>
 {#	{% if isMobile %}

@@ -1,11 +1,8 @@
 {% extends "UKMAmbBundle:Design:layout.html.twig" %}
 
-{% block jumbo_header %}
-	Ambassadørsiden
-{% endblock %}
-{% block jumbo_content %}
-	{{ ambassador.getFirstname() }} {{ ambassador.getLastname() }}
-{% endblock %}
+{% block jumbo_header %}Ambassadørsiden{% endblock %}
+{% block jumbo_content %}{{ ambassador.getFirstname() }} {{ ambassador.getLastname() }}{% endblock %}
+{% block HTMLtitle %}Ambassadørsiden - {{ ambassador.getFirstname() }} {{ ambassador.getLastname() }}{% endblock %}
 
 {% block content %}
 	<div class="row post_top">
@@ -16,14 +13,13 @@
 		</div>
 		
 		<div id="infosquare" class="col-xs-12 col-md-5">
-			<div class="profile">
-				<img src="{{ ambassador.getImage() }}" class="pull-left img img-circle" width="80" style="margin-right: 15px; margin-top: -4px;" />
+			<div class="profile" style="text-align:right; margin-bottom: 15px;">
+				<img src="{{ ambassador.getImage() }}" class="pull-right img img-circle" width="80" style="margin-left: 15px; margin-top: -4px;" />
 				<strong>{{ ambassador.getFirstname() }} {{ ambassador.getLastname() }}</strong>
 				<br />
-				Ambassadør {{ ambassador.getId() }} <br />
-				<i>
-					<a href="http://ukm.no/pl{{ ambassador.getPlid() }}/" target="_blank">{{ ambassador.getMonstringName() }}</a>
-				</i>
+				<a href="http://ukm.no/pl{{ ambassador.getPlid() }}/" target="_blank">{{ ambassador.getMonstringName() }}</a>
+				<br />
+				<a href="{{ url( 'hwi_oauth_logout' ) }}">Logg ut</a>&nbsp;
 			</div>
 			
 			<div class="">

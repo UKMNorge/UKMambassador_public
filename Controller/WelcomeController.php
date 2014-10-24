@@ -41,7 +41,7 @@ class WelcomeController extends Controller
 			// Whois
 	   		$current_user = $this->get('security.context')->getToken()->getUser();
 			
-			$ambassadorObject = $ambassador->get( $current_user->getFacebookId() );
+			$ambassadorObject = $ambassador->get( $current_user->getFacebookIdUnencrypted() );
 			
 		    $session = new Session();  
 			$phone = $session->get('UKMamb_phone');

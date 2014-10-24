@@ -57,13 +57,13 @@ class JoinController extends Controller
 			// Whois
 	   		$current_user = $this->get('security.context')->getToken()->getUser();
 			
-			$ambassadorObject = $ambassador->get( $current_user->getFacebookId() );
+			$ambassadorObject = $ambassador->get( $current_user->getFacebookIdUnencrypted() );
 					
 			if( $ambassadorObject ) {
 				$data['ambassador'] = $ambassadorObject;
 				return $this->render('UKMAmbBundle:Join:alreadyRegistered.html.twig', $data);
 			} else {
-				$faceID		= $current_user->getFacebookId();
+				$faceID		= $current_user->getFacebookIdUnencrypted();
 				$firstname 	= $current_user->getFirstname();
 				$lastname	= $current_user->getLastname();
 				$phone		= $session->get('UKMamb_phone');
@@ -107,7 +107,7 @@ class JoinController extends Controller
 			// Whois
 	   		$current_user = $this->get('security.context')->getToken()->getUser();
 			
-			$ambassadorObject = $ambassador->get( $current_user->getFacebookId() );
+			$ambassadorObject = $ambassador->get( $current_user->getFacebookIdUnencrypted() );
 					
 			if( $ambassadorObject ) {
 				$address = $request->request->get('address');

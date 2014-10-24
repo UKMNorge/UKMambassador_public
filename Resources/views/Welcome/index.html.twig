@@ -1,5 +1,9 @@
 {% extends "UKMAmbBundle:Design:layout.html.twig" %}
 
+{% block jumbo_content %}{{ homepage.title }}{% endblock %}
+
+{% block HTMLtitle %}{{ homepage.title }}{% endblock %}
+
 {% block content %}
 	<div class="col-xs-12 col-md-4 pull-right">
 		<div>
@@ -12,7 +16,7 @@
 		
 		<div>
 			<h2>Bli ambassadør</h2>
-			<p>Vi ønsker alltid flere ambassadører, les mer og kom i gang her!</p>
+			<p>Vil du bli UKM-ambassadør? <br />Vi ønsker alltid flere ambassadører velkommen! Les mer og kom i gang her!</p>
 			<p>
 				<a href="{{ url('ukm_amb_join_homepage') }}" class="btn btn-sm btn-block btn-success">Bli ambassadør</a>
 			</p>
@@ -20,7 +24,6 @@
 		<p>&nbsp;</p>
 	</div>
 	<div class="col-xs-12 col-md-8">
-		<h2>{{ homepage.title }}</h2>
 		{{ homepage.content|raw }}
 	</div>
 {% endblock %}

@@ -1,6 +1,7 @@
 {% extends "UKMAmbBundle:Design:layout.html.twig" %}
 
 {% block jumbo_content %}{{ page.title }}{% endblock %}
+{% block HTMLtitle %}{{ page.title }}{% endblock %}
 
 {% block content %}
 	{% embed "UKMAmbBundle:Design:backtohome.html.twig" %}{% endembed %}

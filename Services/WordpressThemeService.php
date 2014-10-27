@@ -47,7 +47,8 @@ class WordpressThemeService
     	$SEO->type 			= 'login';
     	$SEO->section		= 'UKM for ambassadører';
     	$SEO->analytics		= 'UA-46216680-1';
-    	$SEO->image			= 'http://grafikk.ukm.no/profil/logo/UKM-logo_stor.png';
+#    	$SEO->image			= 'http://grafikk.ukm.no/profil/logo/UKM-logo_stor.png';
+    	$SEO->image			= 'http://grafikk.ukm.no/ambassador/javielskerukm_wide.jpg';
     	
     	$DATA['SEO'] = $SEO;
     	

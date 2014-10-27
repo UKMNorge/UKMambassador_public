@@ -30,49 +30,15 @@
                 -webkit-overflow-scrolling: touch;
             }
         </style>
-		{#<script type="text/javascript" src="{{ url.theme_dir }}js/scrollable.min.js"></script>
-		<script type="text/javascript">
-            addEventListener('DOMContentLoaded', function() {
-                var container = document.getElementById('container');
-                var page = document.getElementById('page');
-                for (var i = 0; i < names.length*5; ++i) {
-                    var item = document.createElement('div');
-                    item.className = 'item';
-                    item.innerHTML = names[i%names.length];
-                    page.appendChild(item);
-                    if (page.offsetHeight > container.offsetHeight*7) {
-                        break;
-                    }
-                }
-            });
-            
-            document.addEventListener('touchstart', function(event) {
-                // Prevent text selection
-                //event.preventDefault();
-            }, false);
-            
-            document.addEventListener('mousedown', function(event) {
-                // Prevent text selection
-                event.preventDefault();
-            }, false);
-		</script>#}
         {% endif %}
 		<style type="text/css">{% block additional_css %}{% endblock %}</style>
 		<script type="text/javascript">{% block additional_js %}{% endblock %}</script>
 		<title>{% block HTMLtitle %}{{SEO.title|raw}}{% endblock %}</title>
 	</head>
 	<body>
-{#	{% if isMobile %}
-	<div class="scrollable vertical">
-	{% endif %}
-#}
 	{# FACEBOOK #}
 	<div id="fb-root"></div>
-
-
-	{% block header_pre %}
-	{% endblock %}
-	
+	{% block header_pre %}{% endblock %}
 	<header class="navbar navbar-static-top navbar-default" id="top" role="banner">
 		{% block header %}
 		<div class="container">

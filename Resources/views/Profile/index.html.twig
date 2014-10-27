@@ -13,14 +13,7 @@
 		</div>
 		
 		<div id="infosquare" class="col-xs-12 col-md-5">
-			<div class="profile" style="text-align:right; margin-bottom: 15px;">
-				<img src="{{ ambassador.getImage() }}" class="pull-right img img-circle" width="80" style="margin-left: 15px; margin-top: -4px;" />
-				<strong>{{ ambassador.getFirstname() }} {{ ambassador.getLastname() }}</strong>
-				<br />
-				<a href="http://ukm.no/pl{{ ambassador.getPlid() }}/" target="_blank">{{ ambassador.getMonstringName() }}</a>
-				<br />
-				<a href="{{ url( 'hwi_oauth_logout' ) }}">Logg ut</a>&nbsp;
-			</div>
+			{% embed "UKMAmbBundle:Profile:card.html.twig" with { 'align': 'right', 'ambassador': ambassador } %}{% endembed %}
 			
 			<div class="">
 	        	<ol>

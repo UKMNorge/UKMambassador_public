@@ -81,12 +81,17 @@ class JoinController extends Controller
     }
     
     public function addressAction() {
-		$ambassador = $this->get('ukm_amb.ambassador');
+		$ambassadorService = $this->get('ukm_amb.ambassador');
     	$wordpressCache = $this->get('ukm_amb.wordpressCache');
     	$wordpressTheme = $this->get('ukm_amb.wordpressTheme');
 
     	$data = $wordpressTheme->prepareThemeData();
 		$data['homepage'] = $wordpressCache->load( 'velkomstpakke/' );
+
+    	// Current profile
+   		$current_user = $this->get('security.context')->getToken()->getUser();
+    	$ambassador = $ambassadorService->get( $current_user->getFacebookIdUnencrypted() );  	
+    	$data['ambassador'] = $ambassador;
 
 	    return $this->render('UKMAmbBundle:Join:addressForm.html.twig', $data );
     }

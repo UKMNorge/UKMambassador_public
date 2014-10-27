@@ -1,37 +1,41 @@
 {% extends "UKMAmbBundle:Design:layout.html.twig" %}
 
 {% block jumbo_header %}
-	Bli ambassadør
+	Takk!
 {% endblock %}
 {% block jumbo_content %}
-	Få velkomstpakken
+	Du er nå registrert
 {% endblock %}
-{% block HTMLtitle %}Bli ambassadør - få velkomstpakken{% endblock %}
+{% block HTMLtitle %}Takk! Du er nå registrert{% endblock %}
 
 {% block content %}
+	<div class="col-xs-12 col-sm-3 pull-right">
+		{% embed "UKMAmbBundle:Profile:card.html.twig" with {'align':'right', 'ambassador': ambassador} %}{% endembed %}
+	</div>
 	<div class="col-xs-12">
 		{{ homepage.content|raw }}
 		<div class="clearfix"></div>
+		
 		<form method="post" action="{{ url('ukm_amb_join_complete') }}">
 			<div class="form-group">
 				<label for="address">Adresse</label>
-				<input type="text" class="form-control" id="address" name="address" placeholder="Skriv inn gateadresse hvis du har en.." />
+				<input type="text" class="form-control" id="address" name="address" placeholder="Skriv inn gateadresse hvis du har en.." required="required" />
 			</div>
 
 			<div class="form-group">
 				<label for="postalcode">Postnummer</label>
-				<input type="text" class="form-control" id="postalcode" name="postalcode" placeholder="Skriv inn postnummer (4 siffer)" />
+				<input type="text" class="form-control" id="postalcode" name="postalcode" placeholder="Skriv inn postnummer (4 siffer)" required="required" />
 			</div>
 
 			<div class="form-group">
 				<label for="postalplace">Poststed</label>
-				<input type="text" class="form-control" id="postalplace" name="postalplace" placeholder="Skriv inn poststed" />
+				<input type="text" class="form-control" id="postalplace" name="postalplace" placeholder="Skriv inn poststed" required="required" />
 			</div>
 
 
 			<div class="form-group">
 				<label for="size">T-skjortestørrelse</label>
-				<select class="form-control" id="size" name="size">
+				<select class="form-control" id="size" name="size" required="required">
 					<option value="false" selected="selected" deactivated="deactivated"> -- Velg størrelse -- </option>
 					<option value="xsmall">X Small</option>
 					<option value="small">Small</option>
@@ -41,7 +45,7 @@
 				</select>
 			</div>
 			
-			<button type="submit" class="btn btn-success">Lagre adrese, og send velkomstpakken</button>
+			<button type="submit" class="btn btn-success">Lagre adresse, og send velkomstpakken</button>
 		</form>
 	</div>
 	

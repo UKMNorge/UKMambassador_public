@@ -15,7 +15,7 @@
 		<p>Har du fått SMS og svart på denne kan du fylle inn mobilnummeret ditt og fullføre registreringen</p>
 		<form method="post" action="{{ url('ukm_amb_join_phone') }}">
 			<p>
-				<input type="tel" name="mobil" id="mobil" placeholder="Skriv inn mobilnummer..." />
+				<input type="tel" name="mobil" id="mobil" placeholder="Skriv inn mobilnummer..." required="required" />
 			</p>
 			<p>
 				<input class="btn btn-sm btn-success" type="submit" value="Registrer meg" />

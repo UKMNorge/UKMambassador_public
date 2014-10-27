@@ -24,6 +24,15 @@
 		<p>&nbsp;</p>
 	</div>
 	<div class="col-xs-12 col-md-8">
+		{% if authenticated %}
+		<div class="alert alert-warning">
+			<strong>Du må være registrert ambassadør for å se ambassadørsiden</strong>
+			<br />
+			Du er logget inn med facebook, men vi finner ikke at du er registrert ambassadør. 
+			<br />
+			Trykk på knappen "bli ambassadør", og følg veiviseren, så er du i gang!
+		</div>
+		{% endif %}
 		{{ homepage.content|raw }}
 	</div>
 {% endblock %}

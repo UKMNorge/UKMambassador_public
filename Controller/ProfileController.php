@@ -51,7 +51,7 @@ class ProfileController extends Controller
 
 	    $nav = new stdClass();
 	    $nav->id			= 'minnepenn';
-	    $nav->url			= 'https://www.dropbox.com/sh/n510utf94hl6jcp/AAAynrOxB9oDBjU-jQgWn-i6a?dl=0';#$this->generateUrl( 'wordpress_page', array('id' => 'minnepenn') );
+	    $nav->url			= 'https://www.dropbox.com/sh/n510utf94hl6jcp/AAAynrOxB9oDBjU-jQgWn-i6a?lst';#$this->generateUrl( 'wordpress_page', array('id' => 'minnepenn') );
 	    $nav->title			= 'Ambassadør-filer';
 	    $nav->description	= 'Videoer og presentasjoner fra minnepennen';
 	    $nav->icon  		= 'folder';

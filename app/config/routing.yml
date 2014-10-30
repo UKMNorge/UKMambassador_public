@@ -1,0 +1,15 @@
+ukm_amb:
+    resource: "@UKMAmbBundle/Resources/config/routing.yml"
+    prefix:   /
+
+mariusmandal_userbundle:
+    resource: @MariusMandalUserBundle/Resources/config/routing.yml
+
+marius_mandal_user:
+    resource: "@MariusMandalUserBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+#fos_user:
+#    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+    

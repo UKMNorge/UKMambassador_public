@@ -1,0 +1,12 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+	<h1>Hjem</h1>
+
+	{% if is_granted("IS_AUTHENTICATED_FULLY")%}
+		Velkommen {{app.user.username}}
+		<a href="{{path("hwi_oauth_logout")}}">Logg ut</a>
+	{% else %}
+		<a href="{{ path("hwi_facebook_login") }}">Logg inn</a>
+	{% endif %}
+{% endblock %}

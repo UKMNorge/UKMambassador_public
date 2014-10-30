@@ -1,0 +1,26 @@
+# User authentication
+fos_user:
+    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+    firewall_name: secure_area
+    user_class: MariusMandal\UserBundle\Entity\User
+    registration:
+        confirmation:
+            enabled: false
+hwi_oauth:
+    firewall_name: secure_area
+    connect: 
+        confirmation: false
+        account_connector: MariusMandalUserProvider
+    
+    resource_owners:
+        facebook:
+            type: 'facebook'
+            client_id: "%facebook_client_id%"
+            client_secret: "%facebook_client_secret%"
+            scope: "email"
+    fosub:
+        username_iterations: 30
+        properties:
+            facebook: facebookID
+    http_client:
+         timeout: 10000

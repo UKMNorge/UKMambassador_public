@@ -1,0 +1,8 @@
+parameters:
+    MariusMandalUserProvider.class: MariusMandal\UserBundle\Security\Core\User\FOSUBUserProvider
+ 
+services:
+    MariusMandalUserProvider:
+        class: "%MariusMandalUserProvider.class%"
+        #this is the place where the properties are passed to the UserProvider - see config.yml
+        arguments: [@fos_user.user_manager,{facebook: facebook_id}]

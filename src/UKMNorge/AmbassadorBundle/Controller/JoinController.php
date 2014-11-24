@@ -57,13 +57,23 @@ class JoinController extends Controller
 			// Whois
 	   		$current_user = $this->get('security.context')->getToken()->getUser();
 			
-			$ambassadorObject = $ambassador->get( $current_user->getFacebookIdUnencrypted() );
-					
+			$ambassadorObject = $ambassador->get( $current_user->getFacebookId() );
+				
+			// Found ambassador	
 			if( $ambassadorObject ) {
 				$data['ambassador'] = $ambassadorObject;
 				return $this->render('UKMAmbBundle:Join:alreadyRegistered.html.twig', $data);
 			} else {
-				$faceID		= $current_user->getFacebookIdUnencrypted();
+				// Did not find ambassador, test loading by unencrypted ID (old way)
+				$ambassadorObject = $ambassador->get( $current_user->getFacebookIdUnencrypted() );
+				if( $ambassadorObject ) {
+					$ambassadorObject->updateFacebookId( $current_user->getFacebookIdUnencrypted(), $current_user->getFacebookId() );
+					// Update ambassador object with new ID
+					$data['ambassador'] = $ambassadorObject;
+					return $this->render('UKMAmbBundle:Join:alreadyRegistered.html.twig', $data);
+				}
+				
+				$faceID		= $current_user->getFacebookId();
 				$firstname 	= $current_user->getFirstname();
 				$lastname	= $current_user->getLastname();
 				$phone		= $session->get('UKMamb_phone');
@@ -90,7 +100,7 @@ class JoinController extends Controller
 
     	// Current profile
    		$current_user = $this->get('security.context')->getToken()->getUser();
-    	$ambassador = $ambassadorService->get( $current_user->getFacebookIdUnencrypted() );  	
+    	$ambassador = $ambassadorService->get( $current_user->getFacebookId() );  	
     	$data['ambassador'] = $ambassador;
 
 	    return $this->render('UKMAmbBundle:Join:addressForm.html.twig', $data );
@@ -112,7 +122,7 @@ class JoinController extends Controller
 			// Whois
 	   		$current_user = $this->get('security.context')->getToken()->getUser();
 			
-			$ambassadorObject = $ambassador->get( $current_user->getFacebookIdUnencrypted() );
+			$ambassadorObject = $ambassador->get( $current_user->getFacebookId() );
 					
 			if( $ambassadorObject ) {
 				$address = $request->request->get('address');

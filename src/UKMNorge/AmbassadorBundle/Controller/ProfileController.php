@@ -29,7 +29,7 @@ class ProfileController extends Controller
     	$data['page_nav'] = $this->_nav();
     	
     	// Current profile
-    	$ambassador = $ambassadorService->get( $current_user->getFacebookIdUnencrypted() );
+    	$ambassador = $ambassadorService->get( $current_user->getFacebookId() );
     	
     	$data['ambassador'] = $ambassador;
     	

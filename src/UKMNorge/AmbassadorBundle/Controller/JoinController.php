@@ -80,6 +80,10 @@ class JoinController extends Controller
 				$email		= $current_user->getEmail();
 				$gender		= $current_user->getGender();
 				$birthday	= 'n/a';
+
+				if( empty( $email ) ) {
+					$email = 'ikke_tilgjengelig_id_'.$faceID.'@ambassador.ukm.no';
+				}
 			
 				$ambassadorObject = $ambassador->create( $faceID, $firstname, $lastname, $phone, $email, $gender, $birthday);
 				

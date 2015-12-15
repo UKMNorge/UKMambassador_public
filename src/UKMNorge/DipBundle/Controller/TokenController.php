@@ -8,7 +8,9 @@ ini_set('session.cookie_domain', '.ukm.dev' );
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Session\Session;
 
+use HttpRequest;
 use UKMNorge\DipBundle\Entity\Token;
+use UKMCurl;
 
 class TokenController extends Controller
 {
@@ -19,9 +21,17 @@ class TokenController extends Controller
 
     public function loginAction() 
     {	
+    	require_once('UKM/curl.class.php');
     	// Dette er entry-funksjonen til DIP-innlogging.
     	// Her sjekker vi om brukeren har en session med en autentisert token, 
     	// og hvis ikke genererer vi en og sender brukeren videre til Delta.
+
+    	// Send request to Delta with token-info
+    	$dipURL = 'http://delta.ukm.dev/web/app_dev.php/dip/token';
+    	$location = 'ambassador';
+
+    	$curl = new UKMCurl();
+
 
     	// Har brukeren en session med token?
     	$session = $this->get('session');
@@ -43,6 +53,7 @@ class TokenController extends Controller
     					return $this->render('UKMDipBundle:Default:index.html.twig', array('name' => 'Logged in successfully!'));
     				}
     				// Redirect til Delta-innlogging
+    				$session->invalidate();
     				return $this->render('UKMDipBundle:Default:index.html.twig', array('name' => 'Token not authorized'));
     			}
     			// Ingen token som matcher, ugyldig?
@@ -62,12 +73,16 @@ class TokenController extends Controller
 		$em = $this->getDoctrine()->getManager();
     	$em->persist($token);
     	$em->flush();
-		// Send request to Delta with token-info
-
+		
+		// Send token to Delta
+		$curl->post(array('location' => $location, 'token' => $token->getToken()));
+		echo $curl->process($dipURL);
+    	
 		// Redirect to Delta
-    	$url = 'http://delta.ukm.dev/web/app_dev.php/ukmid/?token='.$token.'?rdirurl=ambassador';
-    	var_dump($token);
-    	var_dump($session);
+    	$url = 'http://delta.ukm.dev/web/app_dev.php/login?token='.$token->getToken().'&rdirurl=ambassador';
+    	return $this->redirect($url);
+    	// var_dump($token);
+    	// var_dump($session);
 
     	return $this->render('UKMDipBundle:Default:index.html.twig', array('name' => 'LoginTesting'));
     }

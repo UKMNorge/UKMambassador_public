@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new MariusMandal\UserBundle\MariusMandalUserBundle(),
 			new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
             new UKMNorge\AmbassadorBundle\UKMAmbBundle(),
+            new UKMNorge\DipBundle\UKMDipBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

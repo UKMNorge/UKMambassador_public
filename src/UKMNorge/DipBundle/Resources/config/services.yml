@@ -2,3 +2,6 @@ services:
 #    ukm_dip.example:
 #        class: UKMNorge\DipBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]
+    dipb_user_provider:
+        class: UKMNorge\DipBundle\Security\Provider\DipBUserProvider
+        arguments: ["@doctrine"]

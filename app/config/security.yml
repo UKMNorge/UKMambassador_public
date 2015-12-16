@@ -1,2 +1,3 @@
 imports:
-    - { resource: @MariusMandalUserBundle/Resources/config/security.yml }
+   # - { resource: @MariusMandalUserBundle/Resources/config/security.yml }
+    - { resource: @UKMDipBundle/Resources/config/security.yml }

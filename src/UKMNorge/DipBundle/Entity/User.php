@@ -3,6 +3,7 @@
 namespace UKMNorge\DipBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * User
@@ -10,8 +11,13 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="UKMNorge\DipBundle\Entity\UserRepository")
  */
-class User
-{
+class User implements UserInterface
+{   
+    // We don't use the password-functionality, but it needs to be implemented
+    // so that Symfony will treat us like a proper user.
+    protected $salt = 'saaaaalt';
+    protected $password = 'dud';
+
     /**
      * @var integer
      *
@@ -66,9 +72,9 @@ class User
     /**
      * @var integer
      *
-     * @ORM\Column(name="birthdate", type="integer")
+     * @ORM\Column(name="birthdate", type="integer", nullable=true)
      */
-    private $birthdate;
+    private $birthdate = null;
 
 
     /**
@@ -240,5 +246,49 @@ class User
     public function getBirthdate()
     {
         return $this->birthdate;
+    }
+
+
+    ### SECURITY-related methods!
+    public function getRoles() {
+        return array('ROLE_USER');
+    }
+
+    public function getPassword() {
+        // We don't use the password-functionality
+        return hash('sha256', $this->password.$this->salt);
+    }
+
+    public function getSalt() {
+        return $this->salt;
+    }
+
+    public function getUsername() {
+        return $this->deltaId;
+    }
+    public function eraseCredentials() {
+        // Not necessary to do anything.
+    }
+
+
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->password,
+            // see section on salt below
+            // $this->salt,
+        ));
+    }
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+            // see section on salt below
+            // $this->salt
+        ) = unserialize($serialized);
     }
 }

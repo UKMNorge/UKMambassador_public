@@ -110,7 +110,6 @@ class JoinController extends Controller
    		}
 
     	$ambassador = $ambassadorService->get( $current_user->getFacebookId() );  	
-    	var_dump($ambassador);
     	if(!$ambassador) {
     		throw new Exception('Unable to create ambassador-object! Did facebook-connect fail?', 20006);
     	}

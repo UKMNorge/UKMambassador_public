@@ -30,7 +30,10 @@ class ProfileController extends Controller
     	
     	// Current profile
     	$ambassador = $ambassadorService->get( $current_user->getFacebookId() );
-    	
+    	// Hvis brukeren ikke har koblet til facebook, vis facebook-innlogging.
+    	if (!$ambassador) {
+    		return $this->redirect($this->generateUrl('ukm_amb_join_register'));
+    	}
     	$data['ambassador'] = $ambassador;
     	
     	$data['posts'] = $wordpressCache->getCategory( 'nyheter' );  	

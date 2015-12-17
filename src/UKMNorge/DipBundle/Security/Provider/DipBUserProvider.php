@@ -19,7 +19,7 @@ class DipBUserProvider implements UserProviderInterface
 		$user = $userRepo->findOneBy(array('deltaId' => $username));
 		if (!$user) {
 			throw new UsernameNotFoundException(
-				sprintf('Username "%s" does not exist.', $username)
+				sprintf('UserID "%s" does not exist.', $username)
         	);
 		}
 		#$user = new User();

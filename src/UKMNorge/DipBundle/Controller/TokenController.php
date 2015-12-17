@@ -76,14 +76,24 @@ class TokenController extends Controller
 					    $request = $this->get("request");
 				        $event = new InteractiveLoginEvent($request, $token);
 				        $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
-				        
-    					return $this->render('UKMDipBundle:Default:index.html.twig', array('name' => 'Logged in successfully!'));
+
+				        // Redirect til en side bak firewall i stedet
+				        return $this->redirect($this->generateUrl('ukm_amb_profile_homepage'));
+				        #return $this->redirectToRoute('ukm_amb_profile_homepage');
+    					#return $this->render('UKMDipBundle:Default:index.html.twig', array('name' => 'Logged in successfully!'));
     				}
-    				//TODO: Redirect til Delta-innlogging
-    				$session->invalidate();
-    				return $this->render('UKMDipBundle:Default:index.html.twig', array('name' => 'Token not authorized'));
+    				else {
+    					// Hvis token ikke er autentisert enda
+    					// Fjern lagret token
+    					$session->invalidate();
+
+    					return $this->render('UKMDipBundle:Default:index.html.twig', array('name' => 'Token not authorized'));
+    					//TODO: Redirect til Delta-innlogging
+    				}
     			}
+    			// Token finnes, men ikke i databasen.
     			// Ingen token som matcher, ugyldig?
+    			// Genererer ny og last inn siden på nytt?
     			return $this->render('UKMDipBundle:Default:index.html.twig', array('name' => 'Token does not exist'));
     		}
     	}

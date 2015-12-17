@@ -78,7 +78,7 @@ class TokenController extends Controller
 				        $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
 
 				        // Redirect til en side bak firewall i stedet
-				        return $this->redirect($this->generateUrl('ukm_amb_profile_homepage'));
+				        return $this->redirect($this->generateUrl('ukm_amb_join_address'));
 				        #return $this->redirectToRoute('ukm_amb_profile_homepage');
     					#return $this->render('UKMDipBundle:Default:index.html.twig', array('name' => 'Logged in successfully!'));
     				}

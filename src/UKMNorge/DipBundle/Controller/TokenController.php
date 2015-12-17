@@ -159,6 +159,11 @@ class TokenController extends Controller
 		$user->setAddress($data->address);
 		$user->setPostNumber($data->post_number);
 		$user->setPostPlace($data->post_place);
+		$user->setFirstName($data->first_name);
+		$user->setLastName($data->last_name);
+		$user->setFacebookId($data->facebook_id);
+		$user->setFacebookIdUnencrypted($data->facebook_id_unencrypted);
+		$user->setFacebookAccessToken($data->facebook_access_token);
 
 		$time = new DateTime();
 		$user->setBirthdate($time->getTimestamp());

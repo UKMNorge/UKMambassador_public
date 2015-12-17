@@ -108,7 +108,12 @@ class JoinController extends Controller
 	   		mail('support@ukm.no','BUG: Ambassadør-registrering', 'Kunne ikke registrere ambassadør pga feil i objekt current_user: '. var_export( $current_user ) );
 	   		return $this->render('UKMAmbBundle:Join:failCurrentUser.html.twig', $data );
    		}
+
     	$ambassador = $ambassadorService->get( $current_user->getFacebookId() );  	
+    	var_dump($ambassador);
+    	if(!$ambassador) {
+    		throw new Exception('Unable to create ambassador-object! Did facebook-connect fail?', 20006);
+    	}
     	$data['ambassador'] = $ambassador;
 
 	    return $this->render('UKMAmbBundle:Join:addressForm.html.twig', $data );

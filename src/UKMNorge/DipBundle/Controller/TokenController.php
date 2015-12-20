@@ -68,6 +68,7 @@ class TokenController extends Controller
 				        $token = new UsernamePasswordToken($user, $user->getPassword(), "secure_area", $user->getRoles());
 
 				        // For older versions of Symfony, use security.context here
+                        // Newer uses security.token_storage
 				        $this->get("security.context")->setToken($token);
 
 				        // Fire the login event

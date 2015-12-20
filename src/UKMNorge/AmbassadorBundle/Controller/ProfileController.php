@@ -31,7 +31,7 @@ class ProfileController extends Controller
     	// Current profile
     	$ambassador = $ambassadorService->get( $current_user->getFacebookId() );
     	// Hvis brukeren ikke har koblet til facebook, vis facebook-innlogging.
-    	// TODO: Kun redirect til join_register om brukeren ikke har fått velkomstpakke
+    	// TODO: Kun redirect til join_register om brukeren ikke har fått velkomstpakke.
     	// TODO: Redirect til profile om brukeren bare logger inn som vanlig.
     	if (!$ambassador) {
     		// Denne feiler pga MariusMandalUserBundle-kødd

@@ -44,28 +44,28 @@ class User implements UserInterface
     /**
      * @var integer
      *
-     * @ORM\Column(name="phone", type="integer")
+     * @ORM\Column(name="phone", type="integer", nullable=true, nullable=true)
      */
     private $phone;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="address", type="string", length=255)
+     * @ORM\Column(name="address", type="string", length=255, nullable=true)
      */
     private $address;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="post_number", type="integer")
+     * @ORM\Column(name="post_number", type="integer", nullable=true)
      */
     private $postNumber;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="post_place", type="string", length=255)
+     * @ORM\Column(name="post_place", type="string", length=255, nullable=true)
      */
     private $postPlace;
 

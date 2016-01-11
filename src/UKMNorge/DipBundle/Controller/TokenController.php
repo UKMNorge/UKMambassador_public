@@ -55,14 +55,19 @@ class TokenController extends Controller
     			if ($existingToken) {
     				// Hvis token finnes
     				if ($existingToken->getAuth() == true) {
+
     					// Authorized, so trigger log in
     					$userId = $existingToken->getUserId();
+
+                        echo '<br>';
     					var_dump($userId);
+                        
     					// Load user data?
     					$userProvider = $this->get('dipb_user_provider');
     					//$userProvider = $this->get('dipb_user_provider');
     					$user = $userProvider->loadUserByUsername($userId);
-    		// 			var_dump($user);
+    		 			// var_dump($user);
+                        // die('Hellååååå');
 						// die();
     					// Here, "public" is the name of the firewall in your security.yml
 				        $token = new UsernamePasswordToken($user, $user->getPassword(), "secure_area", $user->getRoles());
@@ -154,17 +159,28 @@ class TokenController extends Controller
     		$user = new User();
     	}
 
+        // Vi har ikke nødvendigvis mottatt all data, så her bør det sjekkes. Kan også lagre null.
     	$user->setDeltaId($data->delta_id);
-		$user->setEmail($data->email);
-		$user->setPhone($data->phone);
-		$user->setAddress($data->address);
-		$user->setPostNumber($data->post_number);
-		$user->setPostPlace($data->post_place);
-		$user->setFirstName($data->first_name);
-		$user->setLastName($data->last_name);
-		$user->setFacebookId($data->facebook_id);
-		$user->setFacebookIdUnencrypted($data->facebook_id_unencrypted);
-		$user->setFacebookAccessToken($data->facebook_access_token);
+        if($data->email)
+            $user->setEmail($data->email);
+        if($data->phone)
+            $user->setPhone($data->phone);
+        if($data->address)
+            $user->setAddress($data->address);
+        if($data->post_number)
+            $user->setPostNumber($data->post_number);
+		if($data->post_place)
+            $user->setPostPlace($data->post_place);
+		if($data->first_name)  
+            $user->setFirstName($data->first_name);
+		if($data->last_name)
+            $user->setLastName($data->last_name);
+        if($data->facebook_id)
+		  $user->setFacebookId($data->facebook_id);
+		if($data->facebook_id_unencrypted)
+            $user->setFacebookIdUnencrypted($data->facebook_id_unencrypted);
+		if($data->facebook_access_token)
+            $user->setFacebookAccessToken($data->facebook_access_token);
 
 		$time = new DateTime();
 		$user->setBirthdate($time->getTimestamp());

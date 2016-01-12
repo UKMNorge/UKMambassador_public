@@ -95,6 +95,8 @@ class JoinController extends Controller
     }
     
     public function addressAction() {
+    	
+
 		$ambassadorService = $this->get('ukm_amb.ambassador');
     	$wordpressCache = $this->get('ukm_amb.wordpressCache');
     	$wordpressTheme = $this->get('ukm_amb.wordpressTheme');
@@ -115,9 +117,13 @@ class JoinController extends Controller
     	}
     	$data['ambassador'] = $ambassador;
 
+    	// Hvis har mottatt velkomstpakke, videresend til hjemmesiden / profile??
+    	if ($ambassador->getShirtSent() == true) {
+    		return $this->redirect( $this->generateUrl( 'ukm_amb_profile_homepage'));
+    	}
+
 	    return $this->render('UKMAmbBundle:Join:addressForm.html.twig', $data );
     }
-    
     
     public function completeAction( Request $request ) {
 		// SERVICES

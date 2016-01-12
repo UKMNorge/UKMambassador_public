@@ -46,12 +46,12 @@ class TokenController extends Controller
     		$token = $session->get('token');
     		if ($token) {
     			// Hvis token finnes, sjekk at det er autentisert i databasen
-    			echo '<br>Token is: ';
-    			var_dump($token);
-    			echo '<br>';
+    			// echo '<br>Token is: ';
+    			// var_dump($token);
+    			// echo '<br>';
     			$repo = $this->getDoctrine()->getRepository('UKMDipBundle:Token');
     			$existingToken = $repo->findOneBy(array('token' => $token));
-    			var_dump($existingToken);
+    			// var_dump($existingToken);
     			if ($existingToken) {
     				// Hvis token finnes
     				if ($existingToken->getAuth() == true) {
@@ -59,8 +59,8 @@ class TokenController extends Controller
     					// Authorized, so trigger log in
     					$userId = $existingToken->getUserId();
 
-                        echo '<br>';
-    					var_dump($userId);
+         //                echo '<br>';
+    					// var_dump($userId);
                         
     					// Load user data?
     					$userProvider = $this->get('dipb_user_provider');
@@ -92,14 +92,15 @@ class TokenController extends Controller
     					// Hvis token ikke er autentisert enda
     					// Fjern lagret token
     					$session->invalidate();
-
-    					return $this->render('UKMDipBundle:Default:index.html.twig', array('name' => 'Token not authorized'));
+                        return $this->redirect($this->get('router')->generate('ukm_dip_login'));
+    					// return $this->render('UKMDipBundle:Default:index.html.twig', array('name' => 'Token not authorized'));
     					//TODO: Redirect til Delta-innlogging
     				}
     			}
     			// Token finnes, men ikke i databasen.
     			// Ingen token som matcher, ugyldig?
     			// Genererer ny og last inn siden på nytt?
+                // Denne burde ikke dukke opp!
     			return $this->render('UKMDipBundle:Default:index.html.twig', array('name' => 'Token does not exist'));
     		}
     	}
@@ -120,7 +121,7 @@ class TokenController extends Controller
 		// Send token to Delta
 		$curl->post(array('location' => $location, 'token' => $token->getToken()));
 		$res = $curl->process($dipURL);
-		var_dump($res); 
+		// var_dump($res); 
     	
 		// Redirect to Delta
     	$url = 'http://delta.ukm.dev/web/app_dev.php/login?token='.$token->getToken().'&rdirurl=ambassador';
@@ -128,7 +129,7 @@ class TokenController extends Controller
     	// var_dump($token);
     	// var_dump($session);
 
-    	return $this->render('UKMDipBundle:Default:index.html.twig', array('name' => 'LoginTesting'));
+    	// return $this->render('UKMDipBundle:Default:index.html.twig', array('name' => 'LoginTesting'));
     }
 
     public function receiveAction() {

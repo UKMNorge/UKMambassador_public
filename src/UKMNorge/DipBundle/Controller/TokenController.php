@@ -35,7 +35,7 @@ class TokenController extends Controller
 
     	// Send request to Delta with token-info
     	// $dipURL = 'http://delta.ukm.dev/web/app_dev.php/dip/token';
-        $dipURL = 'http://delta.ukm.no/dip/token';
+        $dipURL = 'http://delta.'. ($this->getParameter('UKM_HOSTNAME') == 'ukm.dev' ? 'ukm.dev'.'/web/app_dev.php' : $this->getParameter('UKM_HOSTNAME')) . '/dip/token';
     	$location = 'ambassador';
 
     	$curl = new UKMCurl();
@@ -126,7 +126,7 @@ class TokenController extends Controller
     	
 		// Redirect to Delta
     	// $url = 'http://delta.ukm.dev/web/app_dev.php/login?token='.$token->getToken().'&rdirurl=ambassador';
-        $url = 'http://delta.ukm.no/login?token='.$token->getToken().'&rdirurl=ambassador';
+        $url = 'http://delta.'. ($this->getParameter('UKM_HOSTNAME') == 'ukm.dev' ? 'ukm.dev'.'/web/app_dev.php' : $this->getParameter('UKM_HOSTNAME')) . '/login?token='.$token->getToken().'&rdirurl=ambassador';
     	return $this->redirect($url);
     	// var_dump($token);
     	// var_dump($session);

@@ -110,7 +110,9 @@ class TokenController extends Controller
     			// Ingen token som matcher, ugyldig?
     			// Genererer ny og last inn siden på nytt?
                 // Denne burde ikke dukke opp!
-    			return $this->render('UKMDipBundle:Default:index.html.twig', array('name' => 'Token does not exist'));
+                $session->invalidate();
+                return $this->redirect($this->get('router')->generate('ukm_dip_login'));
+    			// return $this->render('UKMDipBundle:Default:index.html.twig', array('name' => 'Token does not exist'));
     		}
     	}
     	else {

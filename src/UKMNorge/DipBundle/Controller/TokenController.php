@@ -28,6 +28,15 @@ class TokenController extends Controller
 
     public function loginAction() 
     {	
+        if ( $this->container->getParameter('UKM_HOSTNAME') == 'ukm.dev') {
+            $this->dipURL = 'http://delta.ukm.dev/web/app_dev.php/dip/token';
+            $this->deltaLoginURL = 'http://delta.ukm.dev/web/app_dev.php/login';
+        } 
+        else {
+            $this->dipURL = 'http://delta.ukm.no/dip/token';
+            $this->deltaLoginURL = 'http://delta.ukm.no/login';
+        }
+
     	require_once('UKM/curl.class.php');
     	// Dette er entry-funksjonen til DIP-innlogging.
     	// Her sjekker vi om brukeren har en session med en autentisert token, 
@@ -35,8 +44,7 @@ class TokenController extends Controller
 
     	// Send request to Delta with token-info
     	// $dipURL = 'http://delta.ukm.dev/web/app_dev.php/dip/token';
-        $dipURL = 'http://delta.'. ($this->getParameter('UKM_HOSTNAME') == 'ukm.dev' ? 'ukm.dev'.'/web/app_dev.php' : $this->getParameter('UKM_HOSTNAME')) . '/dip/token';
-    	$location = 'ambassador';
+        $location = 'ambassador';
 
     	$curl = new UKMCurl();
 
@@ -121,13 +129,16 @@ class TokenController extends Controller
 		
 		// Send token to Delta
 		$curl->post(array('location' => $location, 'token' => $token->getToken()));
-		$res = $curl->process($dipURL);
+		$res = $curl->process($this->dipURL);
 		// var_dump($res); 
     	
 		// Redirect to Delta
     	// $url = 'http://delta.ukm.dev/web/app_dev.php/login?token='.$token->getToken().'&rdirurl=ambassador';
-        $url = 'http://delta.'. ($this->getParameter('UKM_HOSTNAME') == 'ukm.dev' ? 'ukm.dev'.'/web/app_dev.php' : $this->getParameter('UKM_HOSTNAME')) . '/login?token='.$token->getToken().'&rdirurl=ambassador';
-    	return $this->redirect($url);
+        #$url = 'http://delta.'. ($this->getParameter('UKM_HOSTNAME') == 'ukm.dev' ? 'ukm.dev'.'/web/app_dev.php' : $this->getParameter('UKM_HOSTNAME')) . '/login?token='.$token->getToken().'&rdirurl=ambassador';
+    	
+        $url = $this->deltaLoginURL.'?token='.$token->getToken().'&rdirurl=ambassador';
+        $url = $this->deltaLoginURL.'?token='.$token->getToken().'&rdirurl=ambassador';
+        return $this->redirect($url);
     	// var_dump($token);
     	// var_dump($session);
 

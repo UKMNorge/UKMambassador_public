@@ -30,13 +30,13 @@ class AmbassadorService
 		require_once('UKM/sql.class.php');
 		// echo 'AmbassadorService: ';
 		// Legg først til telefonnummeret i invitasjons-tabellen
-		$inv = new SQLins('ukm_ambassador_personal_invite');
-		$inv->add('invite_phone', $phone);
-		$inv->add('invite_code', 0);
-		$inv->add('invite_confirmed', 'true');
-		$inv->add('pl_id', "0");
+		// $inv = new SQLins('ukm_ambassador_personal_invite');
+		// $inv->add('invite_phone', $phone);
+		// $inv->add('invite_code', 0);
+		// $inv->add('invite_confirmed', 'true');
+		// $inv->add('pl_id', "0");
 		// echo $inv->debug();
-		$inv->run();
+		// $inv->run();
 
 		$ambassador = new ambassador( false );
 		 

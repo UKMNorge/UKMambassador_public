@@ -25,6 +25,15 @@ class JoinController extends Controller
     }
     
     public function phoneAction(Request $request) {
+    	if ( $this->container->getParameter('UKM_HOSTNAME') == 'ukm.dev') {
+            $this->dipURL = 'http://delta.ukm.dev/web/app_dev.php/dip/token';
+            $this->deltaLoginURL = 'http://delta.ukm.dev/web/app_dev.php/login';
+        } 
+        else {
+            $this->dipURL = 'http://delta.ukm.no/dip/token';
+            $this->deltaLoginURL = 'http://delta.ukm.no/login';
+        }
+
     	$ambassador = $this->get('ukm_amb.ambassador');
 
     	$wordpressTheme = $this->get('ukm_amb.wordpressTheme');
@@ -39,7 +48,9 @@ class JoinController extends Controller
 			$data['phone'] = $request->request->get('mobil');
 		    return $this->render('UKMAmbBundle:Join:phoneFail.html.twig', $data );
 		}
-		return $this->render('UKMAmbBundle:Join:facebookConnect.html.twig', $data);		
+		// It worked, now redirect somewhere else. DIP-innlogging?
+		return $this->redirect($this->generateUrl('ukm_dip_login'));
+		#return $this->render('UKMAmbBundle:Join:facebookConnect.html.twig', $data);		
     }
     
     public function connectAction() {
@@ -95,7 +106,7 @@ class JoinController extends Controller
     }
     
     public function addressAction() {
-    	
+    	// Dette er entry-point fra DIP, så må håndtere at brukeren ikke finnes i systemet.
 
 		$ambassadorService = $this->get('ukm_amb.ambassador');
     	$wordpressCache = $this->get('ukm_amb.wordpressCache');
@@ -113,11 +124,10 @@ class JoinController extends Controller
 
     	$ambassador = $ambassadorService->get( $current_user->getFacebookId() );  	
     	if(!$ambassador) {
-    		// Ingen ambassadør
-
-    		// Sjekk om facebook-id er i nærheten
-    		if ($current_user->getFacebookId()) {
-    			// Opprett ny ambassadør?
+    		// Ingen ambassadør-objekt finnes.
+    		// Sjekk om brukeren har fått invitasjon, lag i så fall en bruker.
+			if ($ambassadorService->gotInvite($current_user->getPhone())) {
+				// Opprett ny ambassadør?
     			// FaceID, Firstname, Lastname, phone, email, gender, birthday
     			$faceid = $current_user->getFacebookId();
     			$firstname = $current_user->getFirstname();
@@ -134,9 +144,14 @@ class JoinController extends Controller
     			// var_dump($gender);
     			// var_dump($bday);
     			$ambassadorService->create($faceid, $firstname, $lastname, $phone, $email, $gender, $bday);
+    			// Hent ambassadør-objektet på nytt, og fortsett på side-lastingen
+    			$ambassador = $ambassadorService->get( $faceid );  
     		}
-    		// Hent ambassadør-objektet på nytt, og redirect
-    		$ambassador = $ambassadorService->get( $current_user->getFacebookId() );  
+    		else {
+	    		// Ingen invitasjon, redirect til info-side
+	    		return $this->redirect( $this->generateUrl('ukm_amb_join_homepage'));	
+    		}
+    		// Fortsatt ingen objekt, feilsjekk som ikke skal inntreffe
     		if (!$ambassador) {
     			throw new Exception('Unable to create ambassador-object! Did facebook-connect fail?', 20006);
     		}	

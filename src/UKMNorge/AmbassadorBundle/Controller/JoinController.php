@@ -113,7 +113,33 @@ class JoinController extends Controller
 
     	$ambassador = $ambassadorService->get( $current_user->getFacebookId() );  	
     	if(!$ambassador) {
-    		throw new Exception('Unable to create ambassador-object! Did facebook-connect fail?', 20006);
+    		// Ingen ambassadør
+
+    		// Sjekk om facebook-id er i nærheten
+    		if ($current_user->getFacebookId()) {
+    			// Opprett ny ambassadør?
+    			// FaceID, Firstname, Lastname, phone, email, gender, birthday
+    			$faceid = $current_user->getFacebookId();
+    			$firstname = $current_user->getFirstname();
+    			$lastname = $current_user->getLastname();
+    			$phone = $current_user->getPhone();
+    			$email = $current_user->getEmail();
+    			$gender = 'unknown';
+    			$bday = $current_user->getBirthdate();
+    			// var_dump($faceid);
+    			// var_dump($firstname);
+    			// var_dump($lastname);
+    			// var_dump($phone);
+    			// var_dump($email);
+    			// var_dump($gender);
+    			// var_dump($bday);
+    			$ambassadorService->create($faceid, $firstname, $lastname, $phone, $email, $gender, $bday);
+    		}
+    		// Hent ambassadør-objektet på nytt, og redirect
+    		$ambassador = $ambassadorService->get( $current_user->getFacebookId() );  
+    		if (!$ambassador) {
+    			throw new Exception('Unable to create ambassador-object! Did facebook-connect fail?', 20006);
+    		}	
     	}
     	$data['ambassador'] = $ambassador;
 

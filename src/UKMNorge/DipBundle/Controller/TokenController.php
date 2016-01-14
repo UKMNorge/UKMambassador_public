@@ -45,11 +45,11 @@ class TokenController extends Controller
     	// Send request to Delta with token-info
     	// $dipURL = 'http://delta.ukm.dev/web/app_dev.php/dip/token';
         #$location = 'ambassador';
-        $location = $this->getParameter('dip_location');
+        $location = $this->container->getParameter('dip_location');
         #$firewall_name = 'secure_area';
-        $firewall_name = $this->getParameter('dip_firewall_area');
+        $firewall_name = $this->container->getParameter('dip_firewall_area');
         #$entry_point = 'ukm_amb_join_address';
-        $entry_point = $this->getParameter('dip_entry_point')
+        $entry_point = $this->container->getParameter('dip_entry_point');
     	$curl = new UKMCurl();
 
 
@@ -97,7 +97,7 @@ class TokenController extends Controller
 				        $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
 
 				        // Redirect til en side bak firewall i stedet
-				        return $this->redirect($this->generateUrl($firewall_site));
+				        return $this->redirect($this->generateUrl($entry_point));
 				        #return $this->redirectToRoute('ukm_amb_profile_homepage');
     					#return $this->render('UKMDipBundle:Default:index.html.twig', array('name' => 'Logged in successfully!'));
     				}

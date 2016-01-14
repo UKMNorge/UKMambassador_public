@@ -8,34 +8,21 @@
 {% block content %}
 	<div class="col-xs-12">
 		{{ homepage.content|raw }}
-	</div>
-	
-	<div class="col-xs-12 col-sm-4 col-sm-push-1">
-		<h3>Jeg har fått SMS</h3>
-		<p>Har du fått SMS og svart på denne skal du kunne logge inn via UKM Delta.</p>
-		<a href="{{ path('ukm_dip_login') }}" class="btn btn-block btn-success btn-sm">Logg inn med UKM Delta</a>
-		{# <p>Har du fått SMS og svart på denne kan du fylle inn mobilnummeret ditt og fullføre registreringen</p> #}
-		{# <form method="post" action="{{ url('ukm_amb_join_phone') }}">
-			<p>
-				<input type="tel" name="mobil" id="mobil" placeholder="Skriv inn mobilnummer..." required="required" />
-			</p>
-			<p>
-				<input class="btn btn-sm btn-success" type="submit" value="Registrer meg" />
-			</p>
-		</form> #}
-	</div>
 
-	<div class="col-xs-12 col-sm-4 col-sm-push-2">
-		<h3>Jeg har ikke fått SMS</h3>
-		<p>
-			For å bli ambassadør må du være invitert av din lokalkontakt.
-		</p>
-		<p>
-			Du kan gjerne sende lokalkontakten din en melding om at du vil være ambassadør.
-		</p>
-		<p>
-			<a href="http://ukm.no/derdubor/" class="btn btn-sm btn-block btn-success" style="color: #fff !important;font-weight: normal !important;">Finn min lokalkontakt</a>
-		</p>
+		{% if invite == 'init' %}
+			<p class="alert alert-danger">Det ser ikke ut som om invitasjons-SMSen er svart på. Send den på nytt og prøv å logge inn igjen.</p>
+			<a href="{{ path('ukm_dip_login') }}" class="btn btn-block btn-success btn-sm">Jeg har svart, logg inn på nytt</a>
+		{% else %}
+			<h3>Jeg har ikke fått SMS</h3>
+			<p>
+				For å bli ambassadør må du være invitert av din lokalkontakt.
+			</p>
+			<p>
+				Du kan gjerne sende lokalkontakten din en melding om at du vil være ambassadør.
+			</p>
+			<p>
+				<a href="http://ukm.no/derdubor/" class="btn btn-sm btn-block btn-success" style="color: #fff !important;font-weight: normal !important;">Finn min lokalkontakt</a>
+			</p>
+		{% endif %}
 	</div>
-	
 {% endblock %}

@@ -70,4 +70,15 @@ class AmbassadorService
 		return $res;
 	}
 
+	public function inviteStatus($phone) {
+		require_once('UKM/sql.class.php');
+		
+		$qry = new SQL("SELECT `invite_confirmed` FROM `ukm_ambassador_personal_invite`
+						WHERE `invite_phone` = '#phone';",
+						array('phone'=>$phone));
+		$res = $qry->run('field','invite_confirmed');
+
+		return $res;
+	}
+
 }

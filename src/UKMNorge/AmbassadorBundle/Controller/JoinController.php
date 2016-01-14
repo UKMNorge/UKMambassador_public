@@ -15,12 +15,17 @@ class JoinController extends Controller
 
     public function indexAction( )
     {
+    	$ambassadorService = $this->get('ukm_amb.ambassador');
+    	$current_user = $this->get('security.context')->getToken()->getUser();
     	$wordpressCache = $this->get('ukm_amb.wordpressCache');
     	$wordpressTheme = $this->get('ukm_amb.wordpressTheme');
 
     	$data = $wordpressTheme->prepareThemeData();
 		$data['homepage'] = $wordpressCache->load( 'bli-ambassador/' );
     	
+		$invite = $ambassadorService->inviteStatus($current_user->getPhone());
+	    $data['invite'] = $invite;
+
         return $this->render('UKMAmbBundle:Join:index.html.twig', $data );
     }
     
@@ -148,7 +153,6 @@ class JoinController extends Controller
     			$ambassador = $ambassadorService->get( $faceid );  
     		}
     		else {
-	    		// Ingen invitasjon, redirect til info-side
 	    		return $this->redirect( $this->generateUrl('ukm_amb_join_homepage'));	
     		}
     		// Fortsatt ingen objekt, feilsjekk som ikke skal inntreffe

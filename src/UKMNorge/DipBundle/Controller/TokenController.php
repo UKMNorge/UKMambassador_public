@@ -44,8 +44,12 @@ class TokenController extends Controller
 
     	// Send request to Delta with token-info
     	// $dipURL = 'http://delta.ukm.dev/web/app_dev.php/dip/token';
-        $location = 'ambassador';
-
+        #$location = 'ambassador';
+        $location = $this->getParameter('dip_location');
+        #$firewall_name = 'secure_area';
+        $firewall_name = $this->getParameter('dip_firewall_area');
+        #$entry_point = 'ukm_amb_join_address';
+        $entry_point = $this->getParameter('dip_entry_point')
     	$curl = new UKMCurl();
 
 
@@ -79,7 +83,7 @@ class TokenController extends Controller
                         // die('Hellååååå');
 						// die();
     					// Here, "public" is the name of the firewall in your security.yml
-				        $token = new UsernamePasswordToken($user, $user->getPassword(), "secure_area", $user->getRoles());
+				        $token = new UsernamePasswordToken($user, $user->getPassword(), $firewall_name, $user->getRoles());
 
 				        // For older versions of Symfony, use security.context here
                         // Newer uses security.token_storage
@@ -93,7 +97,7 @@ class TokenController extends Controller
 				        $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
 
 				        // Redirect til en side bak firewall i stedet
-				        return $this->redirect($this->generateUrl('ukm_amb_join_address'));
+				        return $this->redirect($this->generateUrl($firewall_site));
 				        #return $this->redirectToRoute('ukm_amb_profile_homepage');
     					#return $this->render('UKMDipBundle:Default:index.html.twig', array('name' => 'Logged in successfully!'));
     				}
@@ -138,8 +142,8 @@ class TokenController extends Controller
     	// $url = 'http://delta.ukm.dev/web/app_dev.php/login?token='.$token->getToken().'&rdirurl=ambassador';
         #$url = 'http://delta.'. ($this->getParameter('UKM_HOSTNAME') == 'ukm.dev' ? 'ukm.dev'.'/web/app_dev.php' : $this->getParameter('UKM_HOSTNAME')) . '/login?token='.$token->getToken().'&rdirurl=ambassador';
     	
-        $url = $this->deltaLoginURL.'?token='.$token->getToken().'&rdirurl=ambassador';
-        $url = $this->deltaLoginURL.'?token='.$token->getToken().'&rdirurl=ambassador';
+        #$url = $this->deltaLoginURL.'?token='.$token->getToken().'&rdirurl='.$location;
+        $url = $this->deltaLoginURL.'?token='.$token->getToken().'&rdirurl='.$location;
         return $this->redirect($url);
     	// var_dump($token);
     	// var_dump($session);

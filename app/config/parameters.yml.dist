@@ -22,3 +22,7 @@ parameters:
 
     facebook_client_id: 'id'
     facebook_client_secret: 'secret'
+    UKM_HOSTNAME: ukm.dev
+    dip_location: 'ambassador'
+    dip_firewall_area: secure_area
+    dip_entry_point: ukm_amb_join_address

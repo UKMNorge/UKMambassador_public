@@ -18,16 +18,20 @@ class JoinController extends Controller
     	//TODO: Denne burde gå an uten å være logget inn!
 
     	$ambassadorService = $this->get('ukm_amb.ambassador');
-    	$current_user = $this->get('security.context')->getToken()->getUser();
+    	$securityContext = $this->get('security.context');
+    	$current_user = $securityContext->getToken()->getUser();
+
     	$wordpressCache = $this->get('ukm_amb.wordpressCache');
     	$wordpressTheme = $this->get('ukm_amb.wordpressTheme');
 
     	$data = $wordpressTheme->prepareThemeData();
 		$data['homepage'] = $wordpressCache->load( 'bli-ambassador/' );
     	
-		$invite = $ambassadorService->inviteStatus($current_user->getPhone());
-	    $data['invite'] = $invite;
-
+    	$data['invite'] = null;
+    	if( $securityContext->isGranted('IS_AUTHENTICATED_FULLY') ) {
+    		$invite = $ambassadorService->inviteStatus($current_user->getPhone());
+		    $data['invite'] = $invite;
+    	}	
         return $this->render('UKMAmbBundle:Join:index.html.twig', $data );
     }
     

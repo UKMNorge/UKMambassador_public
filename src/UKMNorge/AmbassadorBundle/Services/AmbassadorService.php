@@ -14,7 +14,10 @@ use SQLins;
 require_once('UKM/ambassador.class.php');
 
 class AmbassadorService
-{
+{	
+	public function __construct($container) {
+		$this->container = $container;
+	}
 
 	public function get( $facebookID ) {
 		$ambassador = new ambassador( $facebookID );
@@ -67,6 +70,33 @@ class AmbassadorService
 						array('phone'=>$phone));
 		$res = $qry->run('field','invite_code');
 
+		return $res;
+	}
+
+	public function gotPackage($facebookID) {
+		require_once('UKM/sql.class.php');
+
+		$ambassador = $this->get($facebookID);
+		$user = $this->container->get('security.context')->getToken()->getUser();
+		$qry = new SQLins('ukm_ambassador_skjorte', array('amb_id'=> $ambassador->getId() ) );
+		$qry->add('sendt', 'true');
+
+		$res = $qry->run();
+
+		// Håndter om brukeren ikke finnes i skjorte-sendt-tabellen
+		if ($res == 0) {
+			$qry = new SQLins('ukm_ambassador_skjorte');
+			
+			$qry->add('amb_id', $ambassador->getId());
+			$qry->add('size', 'unknown');
+			$qry->add('adresse', $user->getAddress());
+			$qry->add('postnr', $user->getPostNumber());
+			$qry->add('poststed', $user->getPostPlace());
+
+			$qry->add('sendt', 'true');
+
+			$res = $qry->run();
+		}
 		return $res;
 	}
 

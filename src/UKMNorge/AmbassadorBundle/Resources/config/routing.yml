@@ -26,8 +26,11 @@ ukm_amb_join_complete:
     path: /bli-ambassador/send_velkomstpakke/
     defaults: { _controller: UKMAmbBundle:Join:complete }
     methods: [POST]
-    
-    
+
+ukm_amb_got_package:
+    path: /bli-ambassador/har_pakke/
+    defaults: { _controller: UKMAmbBundle:Join:gotPackage }
+
 wordpress_page:
     path: /side/{id}/
     defaults: { _controller: UKMAmbBundle:Wordpress:page }

@@ -14,7 +14,9 @@ class JoinController extends Controller
 {
 
     public function indexAction( )
-    {
+    {	
+    	//TODO: Denne burde gå an uten å være logget inn!
+
     	$ambassadorService = $this->get('ukm_amb.ambassador');
     	$current_user = $this->get('security.context')->getToken()->getUser();
     	$wordpressCache = $this->get('ukm_amb.wordpressCache');
@@ -163,11 +165,20 @@ class JoinController extends Controller
     	$data['ambassador'] = $ambassador;
 
     	// Hvis har mottatt velkomstpakke, videresend til hjemmesiden / profile??
-    	if ($ambassador->getShirtSent() == true) {
+    	if ($ambassador->getShirtSent() == 'true') {
     		return $this->redirect( $this->generateUrl( 'ukm_amb_profile_homepage'));
     	}
 
 	    return $this->render('UKMAmbBundle:Join:addressForm.html.twig', $data );
+    }
+
+    public function gotPackageAction( Request $request ) {
+	    $current_user = $this->get('security.context')->getToken()->getUser();
+    	$ambassadorService = $this->get('ukm_amb.ambassador');
+
+    	$res = $ambassadorService->gotPackage($current_user->getFacebookId());
+
+    	return $this->redirect( $this->generateUrl('ukm_amb_homepage') );
     }
     
     public function completeAction( Request $request ) {

@@ -3,7 +3,7 @@
 namespace UKMNorge\DipBundle\Controller;
 
 // For å kunne dele sessions på flere sider
-ini_set('session.cookie_domain', '.ukm.dev' );
+#ini_set('session.cookie_domain', '.ukm.dev' );
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Session\Session;

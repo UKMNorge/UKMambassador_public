@@ -111,7 +111,7 @@ class WordpressCacheService
 	 */
 	public function deleteCache() {
 		try {
-			return unlink( $this->lastBuildFile );
+			return @unlink( $this->lastBuildFile );
 		} catch( Exception $e ) {
 			return false;
 		}

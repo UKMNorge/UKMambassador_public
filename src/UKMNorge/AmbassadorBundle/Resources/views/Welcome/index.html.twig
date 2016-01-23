@@ -17,29 +17,6 @@
 			<p>Vi ønsker alltid flere ambassadører velkommen! Les mer og kom i gang her!</p>
 			<a href="{{ url('ukm_amb_join_homepage') }}" class="btn btn-block btn-success">Bli ambassadør</a>
 		</div>
-		{#<div>
-			<h2>Bli ambassadør</h2>
-			<p>Du kan sende en e-post til <a href="mailto:ingerlise@ukm.no?subject=Ambassadør">ingerlise@ukm.no</a> med ditt navn, adresse (med postnummer og sted), og t-skjortestørrelse, så vil du motta velkomstpakken.
-			</p>
-			<a href="{{ path('ukm_amb_join_homepage') }}">Registrer deg som UKM-Ambassadør</a>
-		</div>#}
-		{#
-		<div>
-			<h2>Logg inn</h2>
-			<p>Hvis du er registrert UKM-ambassadør kan du logge inn til din ambassadørside her</p>
-			<p>
-				<a href="{{ url('hwi_facebook_login') }}" class="btn btn-sm btn-block btn-success">Logg inn med facebook</a>
-			</p>
-		</div>
-		
-		<div>
-			<h2>Bli ambassadør</h2>
-			<p>Vil du bli UKM-ambassadør? <br />Vi ønsker alltid flere ambassadører velkommen! Les mer og kom i gang her!</p>
-			<p>
-				<a href="{{ url('ukm_amb_join_homepage') }}" class="btn btn-sm btn-block btn-success">Bli ambassadør</a>
-			</p>
-		</div>
-		#}
 		<p>&nbsp;</p>
 		<div class="clearfix"></div>
 	</div>
@@ -55,5 +32,6 @@
 		</div>
 		{% endif %}
 		{{ homepage.content|raw }}
+		<div class="clearfix"></div>
 	</div>
 {% endblock %}

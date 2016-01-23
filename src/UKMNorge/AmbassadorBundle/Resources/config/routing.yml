@@ -38,3 +38,7 @@ wordpress_page:
 wordpress_post:
     path: /innlegg/{year}/{month}/{date}/{id}/
     defaults: { _controller: UKMAmbBundle:Wordpress:post }
+
+wordpress_reset_lastbuild:
+    path: /wpcache/reset
+    defaults: { _controller: UKMAmbBundle:Wordpress:deleteLastBuild }

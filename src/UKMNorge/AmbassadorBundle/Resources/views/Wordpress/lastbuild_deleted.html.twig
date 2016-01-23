@@ -1,0 +1,7 @@
+{% if success %}
+	<h1>Success!</h1>
+	<p>Cache is now invalidated (lastbuild-file deleted)</p>
+{% else %}
+	<h1>Failure</h1>
+	<p>Lastbuild-file is supposed to be deleted, but something went wrong. The file is located at "{{ location }}"</p>
+{% endif %}

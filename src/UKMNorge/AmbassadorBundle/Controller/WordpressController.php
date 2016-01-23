@@ -34,5 +34,12 @@ class WordpressController extends Controller
     	
         return $this->render('UKMAmbBundle:Wordpress:post.html.twig', $data );
     }
+    
+    public function deleteLastBuildAction() {
+    	$wordpressCache = $this->get('ukm_amb.wordpressCache');
+		$result = $wordpressCache->deleteCache();
+		$location = $wordpressCache->getLastbuildLocation();
+        return $this->render('UKMAmbBundle:Wordpress:lastbuild_deleted.html.twig', array('success' => $result, 'location' => $location ) );
+    }
 
 }

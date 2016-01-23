@@ -19,12 +19,12 @@ class WordpressCacheService
 	private $baseUrl		= 'http://ukm.no/ambassador/';
 	private $categoryBaseUrl= 'http://ukm.no/ambassador/kategori/';
 	private $feedUrl		= 'http://ukm.no/ambassador/feed/';
-	private $feedFile		= '/tmp/ambassador/feed.xml';
+	private $feedFile		= 'feed.xml';
 	
-	private $tempDir		= '/tmp/ambassador/';
-	private $postDataDir	= '/tmp/ambassador/postData/';
-	private $categoryDataDir= '/tmp/ambassador/category/';
-	private $lastBuildFile	= '/tmp/ambassador/lastbuild.txt';
+	private $tempDir		= 'ambassador/wordpressCache/';
+	private $postDataDir	= 'postData/';
+	private $categoryDataDir= 'category/';
+	private $lastBuildFile	= 'lastbuild.txt';
 
 	private $feedXML		= false;
 	private $feedRaw		= false;
@@ -38,6 +38,15 @@ class WordpressCacheService
 	*/
     public function __construct(ContainerInterface $container) {
         $this->container = $container;
+         
+        $system_tmp = rtrim( sys_get_temp_dir(), '/' ) .'/';        
+        $this->tempDir = $system_tmp . 'ambassador/wordpressCache/';
+        
+        // Re-define variables
+       	$this->feedFile			= $this->tempDir . $this->feedFile;
+       	$this->postDataDir		= $this->tempDir . $this->postDataDir;
+       	$this->categoryDataDir	= $this->tempDir . $this->categoryDataDir;
+       	$this->lastBuildFile	= $this->tempDir . $this->lastBuildFile;
     }
 	
 	/**
@@ -94,6 +103,29 @@ class WordpressCacheService
 		// Load and cache new category
 		$this->_wpBuildCategory( $category );
 	}
+	
+	/**
+	 * Delete lastbuild-file to regenerate @ next load
+	 *
+	 * @return void
+	 */
+	public function deleteCache() {
+		try {
+			return unlink( $this->lastBuildFile );
+		} catch( Exception $e ) {
+			return false;
+		}
+	}
+	
+	/**
+	 * Return location of lastbuild-file
+	 *
+	 * @return string
+	 */
+	public function getLastbuildLocation() {
+		return $this->lastBuildFile;
+	}
+	 
 	
 	/**
 	 * Initiate load of feed, posts, pages and categories from RSS
@@ -356,11 +388,12 @@ class WordpressCacheService
         
 
 	
-	
+
 	private function _wpDataDependencies() {
 		if( !file_exists( dirname( $this->tempDir ) ) ) {
 			try {
-				mkdir( dirname( $this->tempDir ) );
+				var_dump( $this->tempDir );
+				mkdir( $this->tempDir, 0777, true );
 			} catch ( Exception $e ) {
 				throw new Exception('Kunne ikke aksessere temp-dir og XML-data. Kontakt UKM Norge!');
 			}
@@ -368,7 +401,7 @@ class WordpressCacheService
 
 		if( !file_exists( $this->tempDir ) ) {
 			try {
-				mkdir( $this->tempDir );
+				mkdir( $this->tempDir, 0777, true );
 			} catch ( Exception $e ) {
 				throw new Exception('Kunne ikke aksessere temp/ambassadør og XML-data. Kontakt UKM Norge!');
 			}
@@ -376,7 +409,7 @@ class WordpressCacheService
 
 		if( !file_exists( $this->postDataDir ) ) {
 			try {
-				mkdir( $this->postDataDir );
+				mkdir( $this->postDataDir, 0777, true );
 			} catch ( Exception $e ) {
 				throw new Exception('Kunne ikke aksessere temp/ambassadør/post data. Kontakt UKM Norge!');
 			}
@@ -384,7 +417,7 @@ class WordpressCacheService
 
 		if( !file_exists( $this->categoryDataDir ) ) {
 			try {
-				mkdir( $this->categoryDataDir );
+				mkdir( $this->categoryDataDir, 0777, true );
 			} catch ( Exception $e ) {
 				throw new Exception('Kunne ikke aksessere temp/ambassadør/kategori data. Kontakt UKM Norge!');
 			}

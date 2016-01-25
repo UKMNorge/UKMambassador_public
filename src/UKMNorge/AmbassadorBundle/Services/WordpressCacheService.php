@@ -327,7 +327,7 @@ class WordpressCacheService
 		}
 
 		# APP DEVELOPMENT 		
-		return false;
+		#return false;
 
 		$feed 			= $this->_getFeed();	
 	    $lastBuild		= file_get_contents( $this->lastBuildFile );

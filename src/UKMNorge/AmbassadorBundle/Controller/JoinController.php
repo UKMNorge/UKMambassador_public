@@ -118,7 +118,6 @@ class JoinController extends Controller
     
     public function addressAction() {
     	// Dette er entry-point fra DIP, så må håndtere at brukeren ikke finnes i systemet.
-
 		$ambassadorService = $this->get('ukm_amb.ambassador');
     	$wordpressCache = $this->get('ukm_amb.wordpressCache');
     	$wordpressTheme = $this->get('ukm_amb.wordpressTheme');

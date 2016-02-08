@@ -38,7 +38,7 @@ class ProfileController extends Controller
     		return $this->redirect($this->generateUrl('ukm_amb_join_register'));
     	}
     	$data['ambassador'] = $ambassador;
-    	
+    	$data['fb_url'] = 'https://facebook.com/groups/270639562974566/';
     	$data['posts'] = $wordpressCache->getCategory( 'nyheter' );  	
         return $this->render('UKMAmbBundle:Profile:index.html.twig', $data );
     }

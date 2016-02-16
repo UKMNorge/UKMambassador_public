@@ -143,12 +143,15 @@ class AmbassadorService
 		while ($r = mysql_fetch_assoc($kommune)) {
 			$k_id = $r['k_id'];
 			$c = new kontakt($k_id);
-			$contacts[] = $c->get('email');
+			$contacts .= $c->get('email'). ', ';
 		}
+		$contacts = rtrim($contacts, ', ');
 		#$contact = new kontakt($kommune);
 		#var_dump($contacts);
-		if (empty($contacts)) 
+		if (empty($contacts)) {
+			
 			return false;
+		}
 		$mail = new UKMmail();
 		$mail->subject('Ny ambassadør registrert!');
 		$mail->to($contacts);
@@ -158,9 +161,10 @@ class AmbassadorService
 		if (true !== $res) {
 			error_log('AmbassadorService: Kunne ikke sende mail til lokalkontakten. PHPMAILER-error');
 		}
-		var_dump($res);
-		var_dump($mail);
-		throw new Exception('Developing', 20001);
+		$this->container->get('session')->getFlashBag()->add('warning', 'Sendte mail til '.$contacts.'. Mailresultat: '.$res);
+		#var_dump($res);
+		#var_dump($mail);
+		#throw new Exception('Developing', 20001);
 	}
 
 }

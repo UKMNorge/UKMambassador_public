@@ -118,53 +118,54 @@ class AmbassadorService
 	}
 
 	private function notifyContact($ambassador) {
-		// notifyContact
-		// Skrevet 16.02.16 av A. Hustad
-		// asgeirsh@ukmmedia.no
-		// Sender mail til lokalkontakten om at en ny ambassadør er opprettet.
-		if (!$ambassador) {
-			throw new Exception('Kunne ikke varsle lokalkontakten fordi oppretting av ambassadør feilet!', 20010);
-		}
-		
-		$pl_id = $ambassador->getPlid();
-		$seasonService = $this->container->get('ukm_amb.season');
-		$season = $seasonService->getActive();
+	    // notifyContact
+	    // Skrevet 16.02.16 av A. Hustad
+	    // asgeirsh@ukmmedia.no
+	    // Sender mail til lokalkontakten om at en ny ambassadør er opprettet.
+	    if (!$ambassador) {
+	            throw new Exception('Kunne ikke varsle lokalkontakten fordi oppretting av ambassadør feilet!', 20010);
+	    }
 
-		#$season = 2014; // hack
-		#$pl_id = 3519; // DevHack (Pl-id funker fint)
+	    $pl_id = $ambassador->getPlid();
+	    $seasonService = $this->container->get('ukm_amb.season');
+	    $season = $seasonService->getActive();
 
-		$k_qry = new SQL("SELECT * FROM `smartukm_rel_pl_k`
-							WHERE `pl_id` = '#pl_id'
-							AND `season` = '#season';", array('pl_id' => $pl_id, 'season' => $season));
-		#echo $k_qry->debug();
-		$kommune = $k_qry->run();
-		#var_dump($kommune);
-		$contacts = array();
-		while ($r = mysql_fetch_assoc($kommune)) {
-			$k_id = $r['k_id'];
-			$c = new kontakt($k_id);
-			$contacts .= $c->get('email'). ', ';
-		}
-		$contacts = rtrim($contacts, ', ');
-		#$contact = new kontakt($kommune);
-		#var_dump($contacts);
-		if (empty($contacts)) {
-			
-			return false;
-		}
-		$mail = new UKMmail();
-		$mail->subject('Ny ambassadør registrert!');
-		$mail->to($contacts);
-		#$mail->to('asgeirsh@ukmmedia.no');
-		$mail->message('Det har blitt registrert en ny UKM-ambassadør i din kommune! Logg inn på http://ukm.no -> for arrangører hvis du vil se dine ambassadører.');
-		$res = $mail->ok();
-		if (true !== $res) {
-			error_log('AmbassadorService: Kunne ikke sende mail til lokalkontakten. PHPMAILER-error');
-		}
-		$this->container->get('session')->getFlashBag()->add('warning', 'Sendte mail til '.$contacts.'. Mailresultat: '.$res);
-		#var_dump($res);
-		#var_dump($mail);
-		#throw new Exception('Developing', 20001);
+	    #$season = 2014; // hack
+	    $pl_id = 4383; // DevHack (Pl-id funker fint)
+
+	    $k_qry = new SQL("SELECT * FROM `smartukm_rel_pl_ab`
+	                                            WHERE `pl_id` = '#pl_id';", array('pl_id' => $pl_id));
+	    echo $k_qry->debug();
+	    $kommune = $k_qry->run();
+	    #var_dump($kommune);
+	    $contacts = '';
+	    while ($r = mysql_fetch_assoc($kommune)) {
+	            $ab_id = $r['ab_id'];
+	            $c = new kontakt($ab_id);
+	            var_dump($c);
+	            $contacts .= $c->get('email'). ', ';
+	    }
+	    $contacts = rtrim($contacts, ', ');
+	    #$contact = new kontakt($kommune);
+	    var_dump($contacts);
+	    if (empty($contacts)) {
+	            $contacts = 'kontoer@ukm.no';
+	            #return false;
+	    }
+	    $mail = new UKMmail();
+	    $mail->subject('Ny ambassadør registrert!');
+	    #$mail->to($contacts);
+	    $mail->to('asgeirsh@ukmmedia.no');
+	    $mail->message('Det har blitt registrert en ny UKM-ambassadør i din kommune: '.$ambassador->getFirstName() . ' '. $ambassador->getLastName().'. Logg inn på http://ukm.no -> for arrangører hvis du vil se dine ambassadører.');
+	    $res = $mail->ok();
+	    if (true !== $res) {
+	            error_log('AmbassadorService: Kunne ikke sende mail til lokalkontakten. PHPMAILER-error');
+	    }
+	    #$this->container->get('session')->getFlashBag()->add('warning', 'Sendte mail til '.$contacts.'. Mailresultat: '.$res);
+	    var_dump($res);
+	    var_dump($mail);
+	    throw new Exception('Developing', 20001);
 	}
+
 
 }

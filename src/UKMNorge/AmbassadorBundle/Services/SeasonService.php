@@ -1,0 +1,21 @@
+<?php
+namespace UKMNorge\AmbassadorBundle\Services;
+
+class SeasonService {
+	public function __construct($container) {
+		$this->container = $container;
+	}
+
+	public function getActive() {
+		if ($this->container->getParameter('UKM_HOSTNAME') == 'ukm.dev')
+			return 2014;
+		if( date('n') < 8) {
+			return (int) date('Y');
+		} 
+		return (int) date('Y') +1;
+	}
+
+}
+
+
+?>

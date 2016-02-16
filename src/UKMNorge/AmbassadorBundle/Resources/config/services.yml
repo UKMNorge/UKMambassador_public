@@ -13,3 +13,7 @@ services:
         class: UKMNorge\AmbassadorBundle\Services\AmbassadorService
         arguments:
             - @service_container
+    ukm_amb.season:
+        class: UKMNorge\AmbassadorBundle\Services\SeasonService
+        arguments:
+            - @service_container

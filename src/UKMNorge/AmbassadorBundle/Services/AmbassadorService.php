@@ -134,6 +134,8 @@ class AmbassadorService
 
 	    $k_qry = new SQL("SELECT * FROM `smartukm_rel_pl_ab`
 	                                            WHERE `pl_id` = '#pl_id';", array('pl_id' => $pl_id));
+
+	    echo '<pre>';
 	    echo $k_qry->debug();
 	    $kommune = $k_qry->run();
 	    #var_dump($kommune);
@@ -163,6 +165,7 @@ class AmbassadorService
 	    #$this->container->get('session')->getFlashBag()->add('warning', 'Sendte mail til '.$contacts.'. Mailresultat: '.$res);
 	    var_dump($res);
 	    var_dump($mail);
+	    echo '</pre>';
 	    throw new Exception('Developing', 20001);
 	}
 

@@ -130,15 +130,13 @@ class AmbassadorService
 	    $seasonService = $this->container->get('ukm_amb.season');
 	    $season = $seasonService->getActive();
 
-	    $pl_id = 4383; // DevHack (Pl-id funker fint) 4383 = testkommune 3
+	    #$pl_id = 4383; // DevHack (Pl-id funker fint) 4383 = testkommune 3
 
 	    $k_qry = new SQL("SELECT * FROM `smartukm_rel_pl_ab`
 	                                            WHERE `pl_id` = '#pl_id';", array('pl_id' => $pl_id));
 
-	    echo '<pre>';
-	    echo $k_qry->debug();
+	    #echo $k_qry->debug();
 	    $kommune = $k_qry->run();
-	    #var_dump($kommune);
 	    $contacts = '';
 	    while ($r = mysql_fetch_assoc($kommune)) {
 	            $ab_id = $r['ab_id'];
@@ -147,11 +145,10 @@ class AmbassadorService
 	            $contacts .= $c->get('email'). ', ';
 	    }
 	    $contacts = rtrim($contacts, ', ');
-	    #$contact = new kontakt($kommune);
-	    var_dump($contacts);
+	 
+	    #var_dump($contacts);
 	    if (empty($contacts)) {
 	            $contacts = 'kontoer@ukm.no';
-	            #return false;
 	    }
 	    $mail = new UKMmail();
 	    $mail->subject('Ny ambassadør registrert!');
@@ -162,11 +159,6 @@ class AmbassadorService
 	    if (true !== $res) {
 	            error_log('AmbassadorService: Kunne ikke sende mail til lokalkontakten. PHPMAILER-error');
 	    }
-	    #$this->container->get('session')->getFlashBag()->add('warning', 'Sendte mail til '.$contacts.'. Mailresultat: '.$res);
-	    var_dump($res);
-	    var_dump($mail);
-	    echo '</pre>';
-	    throw new Exception('Developing', 20001);
 	}
 
 

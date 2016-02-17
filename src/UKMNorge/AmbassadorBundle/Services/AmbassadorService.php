@@ -50,7 +50,7 @@ class AmbassadorService
 		// var_dump($ambassador);
 		$ambassador = $ambassador->create( $faceID, $firstname, $lastname, $phone, $email, $gender, $birthday);
 		// Varsle lokalkontakten om at det har blitt opprettet en ny ambassadør
-		$this->notifyContact($ambassador);
+		#$this->notifyContact($ambassador);
 		// var_dump($ambassador);
 		return $ambassador;
 	}
@@ -117,7 +117,7 @@ class AmbassadorService
 		return $res;
 	}
 
-	private function notifyContact($ambassador) {
+	public function notifyContact($ambassador) {
 	    // notifyContact
 	    // Skrevet 16.02.16 av A. Hustad
 	    // asgeirsh@ukmmedia.no
@@ -130,8 +130,7 @@ class AmbassadorService
 	    $seasonService = $this->container->get('ukm_amb.season');
 	    $season = $seasonService->getActive();
 
-	    #$season = 2014; // hack
-	    $pl_id = 4383; // DevHack (Pl-id funker fint)
+	    $pl_id = 4383; // DevHack (Pl-id funker fint) 4383 = testkommune 3
 
 	    $k_qry = new SQL("SELECT * FROM `smartukm_rel_pl_ab`
 	                                            WHERE `pl_id` = '#pl_id';", array('pl_id' => $pl_id));
@@ -154,8 +153,8 @@ class AmbassadorService
 	    }
 	    $mail = new UKMmail();
 	    $mail->subject('Ny ambassadør registrert!');
-	    #$mail->to($contacts);
-	    $mail->to('asgeirsh@ukmmedia.no');
+	    $mail->to($contacts);
+	    #$mail->to('asgeirsh@ukmmedia.no');
 	    $mail->message('Det har blitt registrert en ny UKM-ambassadør i din kommune: '.$ambassador->getFirstName() . ' '. $ambassador->getLastName().'. Logg inn på http://ukm.no -> for arrangører hvis du vil se dine ambassadører.');
 	    $res = $mail->ok();
 	    if (true !== $res) {

@@ -50,7 +50,7 @@ class AmbassadorService
 		// var_dump($ambassador);
 		$ambassador = $ambassador->create( $faceID, $firstname, $lastname, $phone, $email, $gender, $birthday);
 		// Varsle lokalkontakten om at det har blitt opprettet en ny ambassadør
-		#$this->notifyContact($ambassador);
+		$this->notifyContact($ambassador);
 		// var_dump($ambassador);
 		return $ambassador;
 	}

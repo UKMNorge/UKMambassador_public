@@ -141,7 +141,7 @@ class AmbassadorService
 	    while ($r = mysql_fetch_assoc($kommune)) {
 	            $ab_id = $r['ab_id'];
 	            $c = new kontakt($ab_id);
-	            var_dump($c);
+	            #var_dump($c);
 	            $contacts .= $c->get('email'). ', ';
 	    }
 	    $contacts = rtrim($contacts, ', ');

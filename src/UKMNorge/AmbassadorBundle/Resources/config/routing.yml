@@ -31,10 +31,6 @@ ukm_amb_got_package:
     path: /bli-ambassador/har_pakke/
     defaults: { _controller: UKMAmbBundle:Join:gotPackage }
 
-ukm_amb_mail_test:
-    path: /test/mail/
-    defaults: { _controller: UKMAmbBundle:Test:mail }
-
 wordpress_page:
     path: /side/{id}/
     defaults: { _controller: UKMAmbBundle:Wordpress:page }

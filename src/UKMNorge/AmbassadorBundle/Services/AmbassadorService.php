@@ -150,7 +150,7 @@ class AmbassadorService
 	    if (empty($contacts)) {
 	            $contacts = 'kontoer@ukm.no';
 	    }
-	    $contacts = 'jardar@ukm.no';
+	    #$contacts = 'jardar@ukm.no';
 	    $mail = new UKMmail();
 	    $mail->subject('Ny ambassadør registrert!');
 	    $mail->to($contacts);

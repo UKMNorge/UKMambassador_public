@@ -15,8 +15,8 @@ class TestController extends Controller
 	public function mailAction() {
 		$ambassadorService = $this->get("ukm_amb.ambassador");
 		$ambassador = $ambassadorService->get(572031635);
-		$mail = $ambassadorService->notifyContact($ambassador);
+		#$mail = $ambassadorService->notifyContact($ambassador);
 
-		return 0; 
+		throw new Exception('Test av mail-system.', 20050);
 	}
 }

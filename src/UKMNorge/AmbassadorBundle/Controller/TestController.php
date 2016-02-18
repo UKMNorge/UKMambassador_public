@@ -14,7 +14,7 @@ class TestController extends Controller
 {
 	public function mailAction() {
 		$ambassadorService = $this->get("ukm_amb.ambassador");
-		$ambassador = $ambassadorService->get();
+		$ambassador = $ambassadorService->get(572031635);
 		$mail = $ambassadorService->mail();
 		
 	}

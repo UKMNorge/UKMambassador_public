@@ -17,5 +17,6 @@ class TestController extends Controller
 		$ambassador = $ambassadorService->get(572031635);
 		$mail = $ambassadorService->notifyContact($ambassador);
 
+		return 0; 
 	}
 }

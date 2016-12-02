@@ -128,7 +128,7 @@ class JoinController extends Controller
     	// Current profile
    		$current_user = $this->get('security.context')->getToken()->getUser();
   		if( !is_object( $current_user ) ) {
-	   		mail('support@ukm.no','BUG: Ambassadør-registrering', 'Kunne ikke registrere ambassadør pga feil i objekt current_user: '. var_export( $current_user ) );
+	   		mail('support@ukm.no','BUG: Ambassadør-registrering', 'Kunne ikke registrere ambassadør pga feil i objekt current_user: '. var_export( $current_user, true ) );
 	   		return $this->render('UKMAmbBundle:Join:failCurrentUser.html.twig', $data );
    		}
 

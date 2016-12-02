@@ -39,10 +39,10 @@ class AppKernel extends Kernel
     
 	public function getCacheDir()
     {
-        return sys_get_temp_dir() .'/ambassador/cache/';
+        return sys_get_temp_dir() .'/ambassador/cache';
     }
 	public function getLogDir()
     {
-        return sys_get_temp_dir() .'/ambassador/log/';
+        return sys_get_temp_dir() .'/ambassador/log';
     }
 }

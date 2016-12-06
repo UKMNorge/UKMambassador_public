@@ -20,6 +20,7 @@ class JoinController extends Controller
     	$ambassadorService = $this->get('ukm_amb.ambassador');
     	$securityContext = $this->get('security.context');
     	$current_user = $securityContext->getToken()->getUser();
+        $current_user = $this->get('dipb_user_provider')->loadUserByUsername($current_user);
 
     	$wordpressCache = $this->get('ukm_amb.wordpressCache');
     	$wordpressTheme = $this->get('ukm_amb.wordpressTheme');
@@ -78,6 +79,7 @@ class JoinController extends Controller
 		if( $securityContext->isGranted('IS_AUTHENTICATED_FULLY') ) {
 			// Whois
 	   		$current_user = $this->get('security.context')->getToken()->getUser();
+            $current_user = $this->get('dipb_user_provider')->loadUserByUsername($current_user);
 			
 			$ambassadorObject = $ambassador->get( $current_user->getFacebookId() );
 				
@@ -127,6 +129,8 @@ class JoinController extends Controller
 
     	// Current profile
    		$current_user = $this->get('security.context')->getToken()->getUser();
+        $current_user = $this->get('dipb_user_provider')->loadUserByUsername($current_user);
+
   		if( !is_object( $current_user ) ) {
 	   		mail('support@ukm.no','BUG: Ambassadør-registrering', 'Kunne ikke registrere ambassadør pga feil i objekt current_user: '. var_export( $current_user, true ) );
 	   		return $this->render('UKMAmbBundle:Join:failCurrentUser.html.twig', $data );
@@ -177,6 +181,8 @@ class JoinController extends Controller
 
     public function gotPackageAction( Request $request ) {
 	    $current_user = $this->get('security.context')->getToken()->getUser();
+        $current_user = $this->get('dipb_user_provider')->loadUserByUsername($current_user);
+
     	$ambassadorService = $this->get('ukm_amb.ambassador');
 
     	$res = $ambassadorService->gotPackage($current_user->getFacebookId());
@@ -198,6 +204,7 @@ class JoinController extends Controller
 		if( $securityContext->isGranted('IS_AUTHENTICATED_FULLY') ) {
 			// Whois
 	   		$current_user = $this->get('security.context')->getToken()->getUser();
+            $current_user = $this->get('dipb_user_provider')->loadUserByUsername($current_user);
 			
 			$ambassadorObject = $ambassador->get( $current_user->getFacebookId() );
 					

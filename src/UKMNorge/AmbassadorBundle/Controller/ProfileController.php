@@ -23,7 +23,8 @@ class ProfileController extends Controller
 			return $this->redirect( $this->generateUrl( 'ukm_amb_homepage' ) );
 		}
    		$current_user = $this->get('security.context')->getToken()->getUser();
-
+   		$current_user = $this->get('dipb_user_provider')->loadUserByUsername($current_user);
+   		
 		// Theme data
 		$data = $wordpressTheme->prepareThemeData();
     	$data['page_nav'] = $this->_nav();

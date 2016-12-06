@@ -43,15 +43,10 @@ class TokenController extends Controller
     	// og hvis ikke genererer vi en og sender brukeren videre til Delta.
 
     	// Send request to Delta with token-info
-    	// $dipURL = 'http://delta.ukm.dev/web/app_dev.php/dip/token';
-        #$location = 'ambassador';
         $location = $this->container->getParameter('dip_location');
-        #$firewall_name = 'secure_area';
         $firewall_name = $this->container->getParameter('dip_firewall_area');
-        #$entry_point = 'ukm_amb_join_address';
         $entry_point = $this->container->getParameter('dip_entry_point');
     	$curl = new UKMCurl();
-
 
     	// Har brukeren en session med token?
     	$session = $this->get('session');
@@ -59,30 +54,18 @@ class TokenController extends Controller
     		$token = $session->get('token');
     		if ($token) {
     			// Hvis token finnes, sjekk at det er autentisert i databasen
-    			// echo '<br>Token is: ';
-    			// var_dump($token);
-    			// echo '<br>';
     			$repo = $this->getDoctrine()->getRepository('UKMDipBundle:Token');
     			$existingToken = $repo->findOneBy(array('token' => $token));
-    			// var_dump($existingToken);
+    	
     			if ($existingToken) {
     				// Hvis token finnes
     				if ($existingToken->getAuth() == true) {
-
     					// Authorized, so trigger log in
     					$userId = $existingToken->getUserId();
 
-         //                echo '<br>';
-    					// var_dump($userId);
-                        
     					// Load user data?
     					$userProvider = $this->get('dipb_user_provider');
-    					//$userProvider = $this->get('dipb_user_provider');
     					$user = $userProvider->loadUserByUsername($userId);
-    		 			// var_dump($user);
-                        // die('Hellååååå');
-						// die();
-    					// Here, "public" is the name of the firewall in your security.yml
 				        $token = new UsernamePasswordToken($user, $user->getPassword(), $firewall_name, $user->getRoles());
 
 				        // For older versions of Symfony, use security.context here
@@ -98,16 +81,12 @@ class TokenController extends Controller
 
 				        // Redirect til en side bak firewall i stedet
 				        return $this->redirect($this->generateUrl($entry_point));
-				        #return $this->redirectToRoute('ukm_amb_profile_homepage');
-    					#return $this->render('UKMDipBundle:Default:index.html.twig', array('name' => 'Logged in successfully!'));
     				}
     				else {
     					// Hvis token ikke er autentisert enda
     					// Fjern lagret token
     					$session->invalidate();
                         return $this->redirect($this->get('router')->generate('ukm_dip_login'));
-    					// return $this->render('UKMDipBundle:Default:index.html.twig', array('name' => 'Token not authorized'));
-    					//TODO: Redirect til Delta-innlogging
     				}
     			}
     			// Token finnes, men ikke i databasen.
@@ -116,7 +95,6 @@ class TokenController extends Controller
                 // Denne burde ikke dukke opp!
                 $session->invalidate();
                 return $this->redirect($this->get('router')->generate('ukm_dip_login'));
-    			// return $this->render('UKMDipBundle:Default:index.html.twig', array('name' => 'Token does not exist'));
     		}
     	}
     	else {
@@ -136,30 +114,40 @@ class TokenController extends Controller
 		// Send token to Delta
 		$curl->post(array('location' => $location, 'token' => $token->getToken()));
 		$res = $curl->process($this->dipURL);
-		// var_dump($res); 
-    	
 		// Redirect to Delta
-    	// $url = 'http://delta.ukm.dev/web/app_dev.php/login?token='.$token->getToken().'&rdirurl=ambassador';
-        #$url = 'http://delta.'. ($this->getParameter('UKM_HOSTNAME') == 'ukm.dev' ? 'ukm.dev'.'/web/app_dev.php' : $this->getParameter('UKM_HOSTNAME')) . '/login?token='.$token->getToken().'&rdirurl=ambassador';
-    	
-        #$url = $this->deltaLoginURL.'?token='.$token->getToken().'&rdirurl='.$location;
         $url = $this->deltaLoginURL.'?token='.$token->getToken().'&rdirurl='.$location;
+        $url = $this->addScope($url);
         return $this->redirect($url);
-    	// var_dump($token);
-    	// var_dump($session);
+    }
 
-    	// return $this->render('UKMDipBundle:Default:index.html.twig', array('name' => 'LoginTesting'));
+    /**
+     * Legger til krav om scope til Delta.
+     * Hvis scope følger innloggingsforespørselen, vil Delta først kreve at informasjonen vi ber om er lagt inn av brukeren,
+     * og deretter sende den til oss på receive.
+     *
+     * @param $url - En fullverdig URL til delta-innlogginen.
+     * @return $url - En URL inkl. scope.
+     */
+    public function addScope( $url ) {
+        // Hvis vi vil be om mer informasjon fra Delta:
+        if( $this->container->hasParameter('ukm_dip.scope') ) {
+            if( strpos($url, '?') ) {
+                $url = $url.'&scope=';
+            }  
+            else {
+                $url = $url.'?scope=';
+            }
+            $url = $url . implode($this->container->getParameter('ukm_dip.scope'), ',');
+        }  
+        return $url;
     }
 
     public function receiveAction() {
 		// Receives a JSON-object in a POST-request from Delta
 		// This is all user-data, plus a token
-
     	$request = Request::CreateFromGlobals();
 
     	$data = json_decode($request->request->get('json'));
-    	#$data = json_decode($request->query->get('json'));
-    	#var_dump($data);
     	$repo = $this->getDoctrine()->getRepository('UKMDipBundle:Token');
     	$existingToken = $repo->findOneBy(array('token' => $data->token));
     	// Set token as authenticated
@@ -204,8 +192,6 @@ class TokenController extends Controller
 
 		$time = new DateTime();
 		$user->setBirthdate($time->getTimestamp());
-		#$user->setBirthdate($data['birthdate']);
-		// TODO: Set birthdate
 
 		$em->persist($user);
 		$em->flush();

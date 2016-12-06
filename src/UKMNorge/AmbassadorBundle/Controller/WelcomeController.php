@@ -43,6 +43,7 @@ class WelcomeController extends Controller
 		if( $securityContext->isGranted('IS_AUTHENTICATED_FULLY') ) {
 			// Whois
 	   		$current_user = $this->get('security.context')->getToken()->getUser();
+	   		$current_user = $this->get('dipb_user_provider')->loadUserByUsername($current_user);
 			
 			$ambassadorObject = $ambassador->get( $current_user->getFacebookId() );
 			

@@ -40,7 +40,8 @@ class ProfileController extends Controller
     	}
     	$data['ambassador'] = $ambassador;
     	$data['fb_url'] = 'https://facebook.com/groups/270639562974566/';
-    	$data['posts'] = $wordpressCache->getCategory( 'nyheter' );  	
+		$data['homepage'] = $wordpressCache->load( 'hva-er-en-ambassador/' );
+
         return $this->render('UKMAmbBundle:Profile:index.html.twig', $data );
     }
     

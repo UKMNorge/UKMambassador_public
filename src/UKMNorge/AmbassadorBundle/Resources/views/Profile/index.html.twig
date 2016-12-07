@@ -1,18 +1,14 @@
 {% extends "UKMAmbBundle:Design:layout.html.twig" %}
 
 {% block jumbo_header %}Ambassadørsiden{% endblock %}
-{% block jumbo_content %}{{ ambassador.getFirstname() }} {{ ambassador.getLastname() }}{% endblock %}
-{% block HTMLtitle %}Ambassadørsiden - {{ ambassador.getFirstname() }} {{ ambassador.getLastname() }}{% endblock %}
+	
+{% block jumbo_content %}{{ homepage.title }}{% endblock %}
+
+{% block HTMLtitle %}{{ homepage.title }}{% endblock %}
 
 {% block content %}
-	<div class="row post_top">
-		<div class="hidden-xs hidden-sm col-md-7">
-			<a href="{{posts[0].url}}">
-				<div class="grid_post_image" style="background-image: url('{{posts[0].image.url}}');"></div>
-			</a>
-		</div>
-		
-		<div id="infosquare" class="col-xs-12 col-md-5">
+	<div class="col-xs-12 col-md-4 pull-right">	
+		<div id="infosquare" class="">
 			{% embed "UKMAmbBundle:Profile:card.html.twig" with { 'align': 'right', 'ambassador': ambassador } %}{% endembed %}
 			<div class="">
 	        	<ol>
@@ -26,39 +22,16 @@
 			<a href="{{ fb_url }}" target="_blank" class="center"><img style="max-width: 100%;" src="http://grafikk.ukm.no/ambassador/fb_banner.png" alt="Banner for ambassadør-gruppa på facebook"></a>
 			<p>&nbsp;</p>
 		</div>
-		<div class="visible-lg col-md-4">
+		<div class="visible-lg">
 			<a href="{{ fb_url }}" target="_blank" class="center"><img style="max-width: 100%; margin-left: 55px; margin-top:8px;" src="http://grafikk.ukm.no/ambassador/fb_banner.png" alt="Banner for ambassadør-gruppa på facebook"></a>
 			<p>&nbsp;</p>
 		</div>
 		<div class="clearfix"></div>
-		<div class="col-xs-12 hidden-xs hidden-sm post_top">		
-			<a href="{{posts[0].url}}"><h2>{{posts[0].title|raw}}</h2></a>
-			<p class="lead">{{posts[0].lead|raw}}</p>
-			<a href="{{posts[0].url}}">les mer</a>
-		</div>
-	</div>
-	
-	
-	<div class="row">
-		<div class="visible-xs visible-sm hidden-md hidden-lg col-xs-12">
-				{% embed "UKMAmbBundle:Wordpress:grid_element.html.twig" with {'post': posts[0]} %}{% endembed %}
-		</div>
 	</div>
 
-	<div class="separator_line"></div>
-	
-	<div class="row">
-		{% for post in posts|slice(1) %}
-			<div class="news col-xs-6 col-md-4">
-				{% embed "UKMAmbBundle:Wordpress:grid_element.html.twig" with {'post': post} %}{% endembed %}
-			</div>
-			
-			{% if loop.index is divisibleby(3) %}
-				<div class="clearfix visible-md visible-lg"></div>
-			{% elseif loop.index is divisibleby(2) %}
-				<div class="clearfix visible-xs visible-sm"></div>
-			{% endif %}
-		{% endfor %}
+	<div class="col-xs-12 col-md-8">
+		{{ homepage.content|raw }}
 	</div>
+	<div class="clearfix"></div>
 
 {% endblock %}

@@ -48,13 +48,22 @@ class ProfileController extends Controller
     private function _nav() {
 	    $navbar = [];
 
-	    $nav = new stdClass();
+	    /*$nav = new stdClass();
 	    $nav->id			= 'facebook';
 	    $nav->url			= '//facebook.com/groups/270639562974566/';
 	    $nav->title			= 'Ambassadørgruppen på facebook';
 	    $nav->description	= 'Del dine erfaringer med andre ambassadører';
 	    $nav->icon  		= 'face';
 	    $nav->target		= '_blank';
+		$navbar[] = $nav;*/
+
+		$nav = new stdClass();
+		$nav->id 			= 'facebook';
+		$nav->url 			= '//facebook.com/UKMNorge';
+		$nav->title 		= 'UKM på facebook';
+		$nav->description 	= 'Følg UKM på facebook og del saker du bryr deg om';
+		$nav->icon 			= 'face';
+		$nav->target 		= '_blank';
 		$navbar[] = $nav;
 
 	    $nav = new stdClass();

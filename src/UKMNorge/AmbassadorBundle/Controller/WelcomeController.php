@@ -26,8 +26,6 @@ class WelcomeController extends Controller
 
 		$securityContext = $this->get('security.context');
 		$data['authenticated'] = $securityContext->isGranted('IS_AUTHENTICATED_FULLY');
-
-    	
 		$data['homepage'] = $wordpressCache->load( 'hva-er-en-ambassador/' );
 
     	

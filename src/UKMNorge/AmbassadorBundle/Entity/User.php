@@ -20,6 +20,14 @@ class User extends BaseUser
      */
     protected $facebook_id;
 
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="kommune_id", type="string", nullable=true)
+     */
+    protected $kommune_id;
+
     public function __construct()
     {
         parent::__construct();
@@ -29,6 +37,9 @@ class User extends BaseUser
     public function setData($data) {
         // Called from DIP on every login, collect what data you want here.
         $this->setFacebookId( $data->facebook_id );
+
+        // Oppdater ambassadør-objekt med kommune-id også?
+        $this->setKommuneId( $data->kommune_id ); 
     }
 
     /**
@@ -64,6 +75,16 @@ class User extends BaseUser
             // $this->salt,
         ));
     }
+
+    public function getKommuneId() {
+        return $this->getKommuneId();
+    }
+
+    public function setKommuneId($kommune_id) {
+        $this->kommune_id = $kommune_id;
+    }
+
+
     public function unserialize($serialized)
     {
         list (

@@ -46,3 +46,7 @@ wordpress_post:
 wordpress_reset_lastbuild:
     path: /wpcache/reset
     defaults: { _controller: UKMAmbBundle:Wordpress:deleteLastBuild }
+
+ukm_amb_fortsett:
+    path: /fortsett/{nummer}
+    defaults: { _controller: UKMAmbBundle:Fortsett:nummer }

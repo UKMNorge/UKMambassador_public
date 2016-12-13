@@ -84,7 +84,7 @@ class AmbassadorService
 
 		$ambassador = $this->get($facebookID);
 		$user = $this->container->get('security.context')->getToken()->getUser();
-		$user = $this->get('dipb_user_provider')->loadUserByUsername($user);
+		$user = $this->container->get('dipb_user_provider')->loadUserByUsername($user);
 		$qry = new SQLins('ukm_ambassador_skjorte', array('amb_id'=> $ambassador->getId() ) );
 		$qry->add('sendt', 'true');
 

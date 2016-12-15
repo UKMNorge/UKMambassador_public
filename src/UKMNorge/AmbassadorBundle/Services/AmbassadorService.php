@@ -33,17 +33,16 @@ class AmbassadorService
 		return $ambassador;
 	}
 	
-	public function create( $faceID, $firstname, $lastname, $phone, $email, $gender, $birthday) {
+	public function create( $faceID, $firstname, $lastname, $phone, $email, $gender, $birthday, $pl_id) {
 		require_once('UKM/sql.class.php');
 		// echo 'AmbassadorService: ';
 		// Legg først til telefonnummeret i invitasjons-tabellen
-		// $inv = new SQLins('ukm_ambassador_personal_invite');
-		// $inv->add('invite_phone', $phone);
-		// $inv->add('invite_code', 0);
-		// $inv->add('invite_confirmed', 'true');
-		// $inv->add('pl_id', "0");
-		// echo $inv->debug();
-		// $inv->run();
+		$inv = new SQLins('ukm_ambassador_personal_invite');
+		$inv->add('invite_phone', $phone);
+		$inv->add('invite_code', 0);
+		$inv->add('invite_confirmed', 'true');
+		$inv->add('pl_id', $pl_id);
+		$inv->run();
 
 		$ambassador = new ambassador( false );
 		 

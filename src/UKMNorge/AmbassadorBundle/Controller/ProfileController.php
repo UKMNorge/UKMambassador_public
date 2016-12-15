@@ -23,7 +23,8 @@ class ProfileController extends Controller
 			return $this->redirect( $this->generateUrl( 'ukm_amb_homepage' ) );
 		}
    		$current_user = $this->get('security.context')->getToken()->getUser();
-
+   		$current_user = $this->get('dipb_user_provider')->loadUserByUsername($current_user);
+   		
 		// Theme data
 		$data = $wordpressTheme->prepareThemeData();
     	$data['page_nav'] = $this->_nav();
@@ -39,20 +40,21 @@ class ProfileController extends Controller
     	}
     	$data['ambassador'] = $ambassador;
     	$data['fb_url'] = 'https://facebook.com/groups/270639562974566/';
-    	$data['posts'] = $wordpressCache->getCategory( 'nyheter' );  	
+		$data['homepage'] = $wordpressCache->load( 'hva-er-en-ambassador/' );
+
         return $this->render('UKMAmbBundle:Profile:index.html.twig', $data );
     }
     
     private function _nav() {
 	    $navbar = [];
 
-	    $nav = new stdClass();
-	    $nav->id			= 'facebook';
-	    $nav->url			= '//facebook.com/groups/270639562974566/';
-	    $nav->title			= 'Ambassadørgruppen på facebook';
-	    $nav->description	= 'Del dine erfaringer med andre ambassadører';
-	    $nav->icon  		= 'face';
-	    $nav->target		= '_blank';
+		$nav = new stdClass();
+		$nav->id 			= 'facebook';
+		$nav->url 			= '//facebook.com/UKMNorge';
+		$nav->title 		= 'UKM på facebook';
+		$nav->description 	= 'Følg UKM på facebook og del saker du bryr deg om';
+		$nav->icon 			= 'face';
+		$nav->target 		= '_blank';
 		$navbar[] = $nav;
 
 	    $nav = new stdClass();

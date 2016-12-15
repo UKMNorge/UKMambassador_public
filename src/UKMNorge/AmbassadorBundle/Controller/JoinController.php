@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use stdClass;
 use Exception;
 use SQL;
+use kommune_monstring;
 
 class JoinController extends Controller
 {
@@ -20,6 +21,7 @@ class JoinController extends Controller
     	$ambassadorService = $this->get('ukm_amb.ambassador');
     	$securityContext = $this->get('security.context');
     	$current_user = $securityContext->getToken()->getUser();
+        $current_user = $this->get('dipb_user_provider')->loadUserByUsername($current_user);
 
     	$wordpressCache = $this->get('ukm_amb.wordpressCache');
     	$wordpressTheme = $this->get('ukm_amb.wordpressTheme');
@@ -50,7 +52,7 @@ class JoinController extends Controller
     	$wordpressTheme = $this->get('ukm_amb.wordpressTheme');
     	$data = $wordpressTheme->prepareThemeData();
 
-	    $session = new Session();  
+	    $session = new Session();
 	    $session->set('UKMamb_phone', $request->request->get('mobil') );
 
 		$code = $ambassador->gotInvite( $request->request->get('mobil') );
@@ -60,8 +62,7 @@ class JoinController extends Controller
 		    return $this->render('UKMAmbBundle:Join:phoneFail.html.twig', $data );
 		}
 		// It worked, now redirect somewhere else. DIP-innlogging?
-		return $this->redirect($this->generateUrl('ukm_dip_login'));
-		#return $this->render('UKMAmbBundle:Join:facebookConnect.html.twig', $data);		
+		return $this->redirect($this->generateUrl('ukm_dip_login'));	
     }
     
     public function connectAction() {
@@ -78,6 +79,7 @@ class JoinController extends Controller
 		if( $securityContext->isGranted('IS_AUTHENTICATED_FULLY') ) {
 			// Whois
 	   		$current_user = $this->get('security.context')->getToken()->getUser();
+            $current_user = $this->get('dipb_user_provider')->loadUserByUsername($current_user);
 			
 			$ambassadorObject = $ambassador->get( $current_user->getFacebookId() );
 				
@@ -117,7 +119,10 @@ class JoinController extends Controller
     }
     
     public function addressAction() {
+        require_once('UKM/monstring_tidligere.class.php');
     	// Dette er entry-point fra DIP, så må håndtere at brukeren ikke finnes i systemet.
+        $this->get('logger')->info('UKMAmbBundle:addressAction: Entered from DIP');
+
 		$ambassadorService = $this->get('ukm_amb.ambassador');
     	$wordpressCache = $this->get('ukm_amb.wordpressCache');
     	$wordpressTheme = $this->get('ukm_amb.wordpressTheme');
@@ -127,56 +132,62 @@ class JoinController extends Controller
 
     	// Current profile
    		$current_user = $this->get('security.context')->getToken()->getUser();
+        $current_user = $this->get('dipb_user_provider')->loadUserByUsername($current_user);
+
   		if( !is_object( $current_user ) ) {
 	   		mail('support@ukm.no','BUG: Ambassadør-registrering', 'Kunne ikke registrere ambassadør pga feil i objekt current_user: '. var_export( $current_user, true ) );
+            if( 'ukm.dev' == UKM_HOSTNAME ) {
+                throw new Exception("Klart ikke å opprette bruker-objekt.");
+            }
 	   		return $this->render('UKMAmbBundle:Join:failCurrentUser.html.twig', $data );
    		}
 
-    	$ambassador = $ambassadorService->get( $current_user->getFacebookId() );  	
+        $this->get('logger')->info('UKMAmbBundle:addressAction: Laster inn ambassadør-objekt');
+    	$ambassador = $ambassadorService->get( $current_user->getFacebookId() );
     	if(!$ambassador) {
-    		// Ingen ambassadør-objekt finnes.
-    		// Sjekk om brukeren har fått invitasjon, lag i så fall en bruker.
-			if ($ambassadorService->gotInvite($current_user->getPhone())) {
-				// Opprett ny ambassadør?
-    			// FaceID, Firstname, Lastname, phone, email, gender, birthday
-    			$faceid = $current_user->getFacebookId();
-    			$firstname = $current_user->getFirstname();
-    			$lastname = $current_user->getLastname();
-    			$phone = $current_user->getPhone();
-    			$email = $current_user->getEmail();
-    			$gender = 'unknown';
-    			$bday = $current_user->getBirthdate();
-    			// var_dump($faceid);
-    			// var_dump($firstname);
-    			// var_dump($lastname);
-    			// var_dump($phone);
-    			// var_dump($email);
-    			// var_dump($gender);
-    			// var_dump($bday);
-    			$ambassadorService->create($faceid, $firstname, $lastname, $phone, $email, $gender, $bday);
-    			// Hent ambassadør-objektet på nytt, og fortsett på side-lastingen
-    			$ambassador = $ambassadorService->get( $faceid );  
-    		}
-    		else {
-	    		return $this->redirect( $this->generateUrl('ukm_amb_join_homepage'));	
-    		}
+            $this->get('logger')->info('UKMAmbBundle:addressAction: Fant ikke ambassadør i databasen, oppretter ny.');
+            #$this->get('logger')->debug('UKMAmbBundle:addressAction: Bruker har kommune: '.$current_user->getKommuneId());
+            $season = $this->get('ukm_amb.season')->getActive();
+            $this->get('logger')->info('Help! Season: '.$season);
+            $this->get('logger')->info('Help! k_id: '.$current_user->getKommuneId() );
+            $pl = new kommune_monstring($current_user->getKommuneId(), $season);
+            $monstring = $pl->monstring_get();
+            $this->get('logger')->debug('UKMAmbBundle:addressAction: Mønstrings-ID: '.$monstring->get('pl_id') );
+
+            $faceid = $current_user->getFacebookId();
+            $firstname = $current_user->getFirstname();
+            $lastname = $current_user->getLastname();
+            $phone = $current_user->getPhone();
+            $email = $current_user->getEmail();
+            $gender = 'unknown';
+            $bday = $current_user->getBirthdate();
+
+            $this->get('logger')->info( 'UKMAmbBundle:addressAction: Oppretter ambassadør med følgende verdier: '.$faceid. ', '.$firstname.', '.$lastname.', '.$phone.', '.$email.', '.$gender.', '.$bday.', '.$monstring->get('pl_id') );
+            $ambassador = $ambassadorService->create($faceid, $firstname, $lastname, $phone, $email, $gender, $bday, $monstring->get('pl_id'));
+            $this->get('logger')->debug( 'UKMAmbBundle:addressAction: Ny ambassadør: '.var_export($ambassador, true) );
+            $ambassador = $ambassadorService->get( $faceid );  
     		// Fortsatt ingen objekt, feilsjekk som ikke skal inntreffe
     		if (!$ambassador) {
-    			throw new Exception('Unable to create ambassador-object! Did facebook-connect fail?', 20006);
+    			throw new Exception('Klarte ikke å opprette ambassadør! Er du koblet til med facebook? Kontakt UKM Support.', 20006);
     		}	
     	}
     	$data['ambassador'] = $ambassador;
 
-    	// Hvis har mottatt velkomstpakke, videresend til hjemmesiden / profile??
+    	// Hvis har mottatt velkomstpakke, videresend til profile.
+        // TODO: Sjekk om info er lagt inn i stedet for om skjorte er sendt? F.eks om man logger inn flere ganger i løpet av uken før skjorten er sendt?
     	if ($ambassador->getShirtSent() == 'true') {
+            $this->get('logger')->info('UKMAmbBundle:addressAction: Ambassadøren har mottatt skjorte, videresendes til profilsiden.');
     		return $this->redirect( $this->generateUrl( 'ukm_amb_profile_homepage'));
     	}
 
+        $this->get('logger')->info('UKMAmbBundle:addressAction: Ambassadøren har ikke mottatt skjorte, videresendes til adresse-skjema.');
 	    return $this->render('UKMAmbBundle:Join:addressForm.html.twig', $data );
     }
 
     public function gotPackageAction( Request $request ) {
 	    $current_user = $this->get('security.context')->getToken()->getUser();
+        $current_user = $this->get('dipb_user_provider')->loadUserByUsername($current_user);
+
     	$ambassadorService = $this->get('ukm_amb.ambassador');
 
     	$res = $ambassadorService->gotPackage($current_user->getFacebookId());
@@ -198,6 +209,7 @@ class JoinController extends Controller
 		if( $securityContext->isGranted('IS_AUTHENTICATED_FULLY') ) {
 			// Whois
 	   		$current_user = $this->get('security.context')->getToken()->getUser();
+            $current_user = $this->get('dipb_user_provider')->loadUserByUsername($current_user);
 			
 			$ambassadorObject = $ambassador->get( $current_user->getFacebookId() );
 					

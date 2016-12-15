@@ -1,7 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
-    - { resource: @MariusMandalUserBundle/Resources/config/config.yml }
+#    - { resource: @MariusMandalUserBundle/Resources/config/config.yml }
 
 framework:
     #esi:             ~
@@ -69,6 +69,11 @@ doctrine:
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
+
+fos_user:
+      db_driver: orm
+      firewall_name: secure_area
+      user_class: UKMNorge\AmbassadorBundle\Entity\User
 
 # Swiftmailer Configuration
 swiftmailer:

@@ -1739,7 +1739,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UKMNorge/UKMDipBundle.git",
-                "reference": "bd90c58d0d4876d0cd9482875c6e0d8d38d479c7"
+                "reference": "0786fe6bd91cd8536975456e35bdf202d6daa242"
             },
             "type": "library",
             "autoload": {
@@ -1756,7 +1756,7 @@
             ],
             "description": "Simple authentication for UKM services",
             "homepage": "http://github.com/UKMNorge/UKMDipBundle",
-            "time": "2016-12-06 13:25:04"
+            "time": "2016-12-15 17:07:23"
         }
     ],
     "packages-dev": [

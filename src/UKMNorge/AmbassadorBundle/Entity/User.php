@@ -77,7 +77,7 @@ class User extends BaseUser
     }
 
     public function getKommuneId() {
-        return $this->getKommuneId();
+        return $this->kommune_id;
     }
 
     public function setKommuneId($kommune_id) {

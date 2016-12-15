@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 */
 class User extends BaseUser
 {
+
     /**
      * @var string
      *
@@ -24,7 +25,7 @@ class User extends BaseUser
      *
      * @ORM\Column(name="phone", type="integer", nullable=true, nullable=true)
      */
-    protected $phone;
+    private $phone;
 
 
     /**
@@ -33,6 +34,13 @@ class User extends BaseUser
      * @ORM\Column(name="kommune_id", type="string", nullable=true)
      */
     protected $kommune_id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=255)
+     */
+    protected $email;
 
     /**
      * @var string
@@ -82,16 +90,6 @@ class User extends BaseUser
 
         // Oppdater ambassadør-objekt med kommune-id også?
         $this->setKommuneId( $data->kommune_id ); 
-
-        $this->setPhone($data->phone);
-        
-        $this->setPostNumber($data->post_number);
-        $this->setPostPlace($data->post_place);
-        $this->setAddress($data->address);
-        #$date = new DateTime();
-        #$date->setTimestamp( $data->birthdate-> );
-        #$this->setBirthdate($data->birthdate);
-        //var_dump($data->birthdate);
     }
 
     /**
@@ -146,143 +144,5 @@ class User extends BaseUser
             // see section on salt below
             // $this->salt
         ) = unserialize($serialized);
-    }
-
-    /**
-     * Set phone
-     *
-     * @param integer $phone
-     * @return User
-     */
-    public function setPhone($phone)
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    /**
-     * Get phone
-     *
-     * @return integer 
-     */
-    public function getPhone()
-    {
-        return $this->phone;
-    }
-
-    /**
-     * Set address
-     *
-     * @param string $address
-     * @return User
-     */
-    public function setAddress($address)
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    /**
-     * Get address
-     *
-     * @return string 
-     */
-    public function getAddress()
-    {
-        return $this->address;
-    }
-
-    /**
-     * Set postNumber
-     *
-     * @param integer $postNumber
-     * @return User
-     */
-    public function setPostNumber($postNumber)
-    {
-        $this->postNumber = $postNumber;
-
-        return $this;
-    }
-
-    /**
-     * Get postNumber
-     *
-     * @return integer 
-     */
-    public function getPostNumber()
-    {
-        return $this->postNumber;
-    }
-
-    /**
-     * Set postPlace
-     *
-     * @param string $postPlace
-     * @return User
-     */
-    public function setPostPlace($postPlace)
-    {
-        $this->postPlace = $postPlace;
-
-        return $this;
-    }
-
-    /**
-     * Get postPlace
-     *
-     * @return string 
-     */
-    public function getPostPlace()
-    {
-        return $this->postPlace;
-    }
-
-    /**
-     * Set birthdate
-     *
-     * @param integer $birthdate
-     * @return User
-     */
-    public function setBirthdate($birthdate)
-    {
-        $this->birthdate = $birthdate;
-
-        return $this;
-    }
-
-    /**
-     * Get birthdate
-     *
-     * @return integer 
-     */
-    public function getBirthdate()
-    {
-        return $this->birthdate;
-    }
-
-    /**
-     * Set gender
-     *
-     * @param string $gender
-     * @return User
-     */
-    public function setGender($gender)
-    {
-        $this->gender = $gender;
-
-        return $this;
-    }
-
-    /**
-     * Get gender
-     *
-     * @return string 
-     */
-    public function getGender()
-    {
-        return $this->gender;
     }
 }

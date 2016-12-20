@@ -25,7 +25,7 @@ class FortsettController extends Controller
 	 *
 	 */
 	public function nummerAction( Request $request, $nummer ) {
-		require_once('UKM/SQL.class.php');
+		require_once('UKM/sql.class.php');
 		#$nummer = $request->request->get('nummer');
 
 		$qry = new SQLins("ukm_ambassador", array('amb_phone' => $nummer));

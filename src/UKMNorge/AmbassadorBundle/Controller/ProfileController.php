@@ -38,6 +38,11 @@ class ProfileController extends Controller
     		// Denne feiler pga MariusMandalUserBundle-kødd
     		return $this->redirect($this->generateUrl('ukm_amb_join_register'));
     	}
+    	
+    	if( $ambassador->isDeaktivert() ) {
+	    	$ambassador->aktiver();
+    	}
+    	
     	$data['ambassador'] = $ambassador;
     	$data['fb_url'] = 'https://facebook.com/groups/270639562974566/';
 		$data['homepage'] = $wordpressCache->load( 'hva-er-en-ambassador/' );

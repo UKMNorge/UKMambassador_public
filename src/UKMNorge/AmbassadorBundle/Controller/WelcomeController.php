@@ -47,15 +47,7 @@ class WelcomeController extends Controller
 			
 		    $session = new Session();  
 			$phone = $session->get('UKMamb_phone');
-			
-			if( !$ambassadorObject ) {
-				// Did not find ambassador, test loading by unencrypted ID (old way)
-				$ambassadorObject = $ambassador->get( $current_user->getFacebookIdUnencrypted() );
-				if( $ambassadorObject ) {
-					$ambassadorObject->updateFacebookId( $current_user->getFacebookIdUnencrypted(), $current_user->getFacebookId() );
-				}
-			}
-			
+
 			if( $ambassadorObject ) {
 				return $this->redirect( $this->generateUrl( 'ukm_amb_profile_homepage' ) ); #, array('ID' => $ambassadorObject->getId() ) ) );
 			} elseif( !empty( $phone ) ) {

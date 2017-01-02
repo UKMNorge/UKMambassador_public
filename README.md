@@ -1,10 +1,20 @@
 UKMambassador_public
 ====================
-Egen symfony-app som henter ut informasjon fra wordpress, og cacher denne
+Symfony-app som henter ut informasjon fra wordpress, og cacher denne
 
-For å slette cache, slett "lastbuild.txt", så vil symfony bygge ny cache ved neste page load
+## Slette cache
+Slett "lastbuild.txt", så vil symfony bygge ny cache ved neste page load
 
 Husk å slette prod-cache fra CLI ved oppdateringer av kildekode (skal hektes på git auto-pull når dette skjer)
 php bin/console cache:clear --env=prod
 
-Oppdateres ikke automatisk ved git push
+# Setup
+
+#### 1. Kjør composer install
+Bruk default-parameters i dev-miljø
+#### 2. Opprett API-nøkler i UKMid-admin (UKM Norge-admin, eget menyvalg)
+UKMid-nøkkel:
+- API-nøkkel: ambassador
+- API-secret: test
+- Retur-URL: http://ambassador.ukm.dev/dip/login/	
+- Token-URL: http://ambassador.ukm.dev/dip/receive/	

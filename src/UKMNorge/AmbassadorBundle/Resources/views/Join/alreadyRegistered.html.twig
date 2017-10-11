@@ -1,28 +1,21 @@
 {% extends "UKMAmbBundle:Design:layout.html.twig" %}
 
-{% block jumbo_header %}
-	Bli ambassadør
-{% endblock %}
-{% block jumbo_content %}
-	Allerede registrert!
-{% endblock %}
-{% block HTMLtitle %}Bli ambassadør - allerede registrert{% endblock %}
-
 {% block content %}
-	<div class="col-xs-12">
-		<p class="lead">
-			Det ser ut til at du ikke skal være på denne siden, for du er allerede registrert.
-		</p>
-
-		<p>
-			For å gå til din ambassadørside kan du trykke på knappen nedenfor. 
-			Hvis du fortsetter å komme til denne siden anbefaler vi deg å ta <a href="http://om.ukm.no/kontakt/administrasjonen/">kontakt med administrasjonen (support)</a>.
-		</p>
-		<p>
-			<a href="{{ url('ukm_amb_profile_home', {'ID': ambassador.getID() }) }}" class="btn btn-sm btn-success">Gå til min ambassadørside</a>
-		</p>
-
-		<p>&nbsp;</p>
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<p class="lead">
+					Det ser ut til at du ikke skal være på denne siden, for du er allerede registrert.
+				</p>
+		
+				<p>
+					For å gå til din ambassadørside kan du trykke på knappen nedenfor. 
+					Hvis du fortsetter å komme til denne siden anbefaler vi deg å ta <a href="http://om.ukm.no/kontakt/administrasjonen/">kontakt med administrasjonen (support)</a>.
+				</p>
+				<p>
+					<a href="{{ url('ukm_amb_profile_home', {'ID': ambassador.getID() }) }}" class="btn btn-sm btn-outline-primary">Gå til min ambassadørside</a>
+				</p>
+			</div>
+		</div>
 	</div>
-	
 {% endblock %}

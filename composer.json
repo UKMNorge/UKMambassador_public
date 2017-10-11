@@ -7,10 +7,14 @@
         "psr-0": { "": "src/", "SymfonyStandard": "app/" }
     },
     "repositories": [
-    {
-        "url": "https://github.com/UKMNorge/UKMDipBundle.git",
-        "type": "git"
-    }
+        {
+            "url": "https://github.com/UKMNorge/UKMDipBundle.git",
+            "type": "git"
+        },
+	    {
+            "url": "https://github.com/UKMNorge/UKMresponsive.git",
+            "type": "git"
+        }
     ],
     "require": {
         "php": ">=5.3.3",
@@ -26,7 +30,8 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "friendsofsymfony/user-bundle": "~2.0@dev",
         "hwi/oauth-bundle": "0.3.*@dev",
-        "ukmnorge/ukmdipbundle": "dev-master"
+        "ukmnorge/ukmdipbundle": "dev-master",
+        "ukmnorge/designbundle": "dev-redesign@dev"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

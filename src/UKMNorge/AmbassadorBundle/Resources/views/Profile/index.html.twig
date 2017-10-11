@@ -1,29 +1,37 @@
 {% extends "UKMAmbBundle:Design:layout.html.twig" %}
 
-{% block jumbo_header %}Ambassadørsiden{% endblock %}
-
-{% block jumbo_content %}{{ homepage.title }}{% endblock %}
-
-{% block HTMLtitle %}{{ homepage.title }}{% endblock %}
-
 {% block content %}
-	<div class="col-xs-12 col-md-4 pull-right">	
-		<div id="infosquare" class="">
-			{% embed "UKMAmbBundle:Profile:card.html.twig" with { 'align': 'right', 'ambassador': ambassador } %}{% endembed %}
-			<div class="">
-	        	<ol>
-				{% for nav in page_nav %}
-					{% embed "UKMAmbBundle:Design:nav.html.twig" %}{% endembed %}
-				{% endfor %}
+	<div class="container">
+		<div class="row-fluid">
+			<div class="col-12 col-md-4 float-right">	
+				{% embed "UKMAmbBundle:Profile:card.html.twig" with { 'align': 'right', 'ambassador': ambassador } %}{% endembed %}
+				<ol class="list-unstyled my-4">
+					<li class="my-3">
+						<a href="/side/hva-gjor-en-ambassador/" class="btn btn-outline-primary btn-block">
+							Hva gjør en ambassadør?
+						</a>
+					</li>
+					<li class="my-3">
+						<a href="//facebook.com/UKMNorge" target="_blank" class="btn btn-outline-primary btn-block">
+							UKM på facebook
+						</a>
+					</li>
+					<li class="my-3">
+						<a href="//www.dropbox.com/sh/w6raxpg6at1iwkz/AACxZj2mvsDNXd_4xg1WaDZsa?dl=0" target="_blank" class="btn btn-outline-primary btn-block">
+							Ambassadør-filer
+						</a>
+					</li>
+					<li class="my-3">
+						<a href="//org.ukm.no/grafisk-profil/" class="btn btn-outline-primary btn-block">
+							Grafisk profil
+						</a>
+					</li>
 				</ol>
 			</div>
+			
+			<div class="col-12 col-md-8 float-left">
+				{{ homepage.content|raw }}
+			</div>
 		</div>
-		<div class="clearfix"></div>
 	</div>
-
-	<div class="col-xs-12 col-md-8">
-		{{ homepage.content|raw }}
-	</div>
-	<div class="clearfix"></div>
-
 {% endblock %}

@@ -1,58 +1,59 @@
 {% extends "UKMAmbBundle:Design:layout.html.twig" %}
 
-{% block jumbo_header %}
-	Takk!
-{% endblock %}
-{% block jumbo_content %}
-	Du er nå registrert
-{% endblock %}
-{% block HTMLtitle %}Takk! Du er nå registrert{% endblock %}
-
 {% block content %}
-	<div class="col-xs-12 col-sm-3 pull-right">
-		{% embed "UKMAmbBundle:Profile:card.html.twig" with {'align':'right', 'ambassador': ambassador} %}{% endembed %}
-	</div>
-	<div class="col-xs-12 col-sm-9 pull-left">
-		{{ homepage.content|raw }}
-		<div class="clearfix"></div>
-		<p>&nbsp;</p>
-		<a href="{{ url('ukm_amb_got_package') }}" class="btn col-xs-12 col-sm-8 col-sm-offset-2 btn-primary">Jeg har allerede mottatt velkomstpakken, hopp over!</a>
-		<div class="clearfix"></div>
-		<p>&nbsp;</p>
-		<form method="post" action="{{ url('ukm_amb_join_complete') }}">
-			<div class="form-group">
-				<label for="address">Adresse</label>
-				<input type="text" class="form-control" id="address" name="address" placeholder="Skriv inn gateadresse hvis du har en.." required="required" />
+	<div class="container">
+		<div class="row">
+			<div class="col-12 col-sm-3 float-right">
+				{% embed "UKMAmbBundle:Profile:card.html.twig" with {'align':'right', 'ambassador': ambassador} %}{% endembed %}
 			</div>
-
-			<div class="form-group">
-				<label for="postalcode">Postnummer</label>
-				<input type="text" class="form-control" id="postalcode" name="postalcode" placeholder="Skriv inn postnummer (4 siffer)" required="required" />
-			</div>
-
-			<div class="form-group">
-				<label for="postalplace">Poststed</label>
-				<input type="text" class="form-control" id="postalplace" name="postalplace" placeholder="Skriv inn poststed" required="required" />
-			</div>
-
-
-			<div class="form-group">
-				<label for="size">T-skjortestørrelse</label>
-				<select class="form-control" id="size" name="size" required="required">
-					<option value="false" selected="selected" deactivated="deactivated"> -- Velg størrelse -- </option>
-					<option value="xsmall">X Small</option>
-					<option value="small">Small</option>
-					<option value="medium">Medium</option>
-					<option value="large">Large</option>
-					<option value="xlarge">X Large</option>
-					<option value="xxlarge">XX Large</option>
-					<option value="xxxlarge">XXX Large</option>
-				</select>
-			</div>
+			<div class="col-12 col-sm-9 float-left">
+				<div class="mb-4">
+					{{ homepage.content|raw }}
+				</div>
+				<p>
+					<a href="{{ url('ukm_amb_got_package') }}" class="">
+						Jeg har allerede mottatt velkomstpakken, hopp over dette.
+					</a>
+				</p>
+				
+				<h3>Bestill velkomstpakke</h3>
+				<div class="my-3">
+					<form method="post" action="{{ url('ukm_amb_join_complete') }}">
+						<div class="form-group">
+							<label for="address">Adresse</label>
+							<input type="text" class="form-control" id="address" name="address" placeholder="Skriv inn gateadresse hvis du har en.." required="required" />
+						</div>
 			
-			<button type="submit" class="btn btn-success">Lagre adresse, og send velkomstpakken</button>
-		</form>
+						<div class="form-group">
+							<label for="postalcode">Postnummer</label>
+							<input type="text" class="form-control" id="postalcode" name="postalcode" placeholder="Skriv inn postnummer (4 siffer)" required="required" />
+						</div>
+			
+						<div class="form-group">
+							<label for="postalplace">Poststed</label>
+							<input type="text" class="form-control" id="postalplace" name="postalplace" placeholder="Skriv inn poststed" required="required" />
+						</div>
+			
+						<div class="form-group">
+							<label for="size">T-skjortestørrelse</label>
+							<select class="form-control" id="size" name="size" required="required">
+								<option value="false" selected="selected" deactivated="deactivated"> -- Velg størrelse -- </option>
+								<option value="xsmall">X Small</option>
+								<option value="small">Small</option>
+								<option value="medium">Medium</option>
+								<option value="large">Large</option>
+								<option value="xlarge">X Large</option>
+								<option value="xxlarge">XX Large</option>
+								<option value="xxxlarge">XXX Large</option>
+							</select>
+						</div>
+						
+						<button type="submit" class="btn btn-outline-primary btn-block">Lagre adresse, og send velkomstpakken</button>
+					</form>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+		</div>
 	</div>
-	<div class="clearfix"></div>
-	
+			
 {% endblock %}

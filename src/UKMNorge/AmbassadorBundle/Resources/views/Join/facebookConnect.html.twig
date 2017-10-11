@@ -1,36 +1,31 @@
 {% extends "UKMAmbBundle:Design:layout.html.twig" %}
 
-{% block jumbo_header %}
-	Bli ambassadør
-{% endblock %}
-{% block jumbo_content %}
-	Logg inn med facebook
-{% endblock %}
-{% block HTMLtitle %}Logg inn med facebook{% endblock %}
-
-
 {% block content %}
-	<div class="col-xs-12">
-		<h2>
-			For å være ambassadør må du logge inn med facebook.
-		</h2>
-		<p class="lead">Vi bruker facebook for å logge deg inn så du slipper å lage et brukernavn og passord du aldri husker</p>
-		<p>
-			<a href="{{ url('hwi_facebook_login') }}" class="btn btn-sm btn-success">Logg inn med facebook</a>
-		</p>
-
-		<p>&nbsp;</p>
-
-		<h4>Det er trygt</h4>
-		<p>
-			Vi gir aldri din facebook-informasjon videre til noen andre. Vi kommer heller aldri til å poste noe på tidslinjen din.
-		</p>
-
-		<h4>Hvorfor logge inn med facebook?</h4>
-		<p>
-			UKM bruker innlogging via facebook kun fordi det er utrolig enkelt for deg som bruker.
-		</p>
-
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<h1>
+					For å være ambassadør må du logge inn med facebook.
+				</h1>
+				<p class="lead">
+					Vi bruker facebook for å logge deg inn så du slipper å lage et brukernavn og passord du aldri husker
+				</p>
+				<p>
+					<a href="{{ url('hwi_facebook_login') }}" class="btn btn-sm btn-success">Logg inn med facebook</a>
+				</p>
+		
+				<p>&nbsp;</p>
+		
+				<h4>Det er trygt</h4>
+				<p>
+					Vi gir aldri din facebook-informasjon videre til noen andre. Vi kommer heller aldri til å poste noe på tidslinjen din.
+				</p>
+		
+				<h4>Hvorfor logge inn med facebook?</h4>
+				<p>
+					UKM bruker innlogging via facebook kun fordi det er utrolig enkelt for deg som bruker.
+				</p>
+			</div>
+		</div>
 	</div>
-	
 {% endblock %}

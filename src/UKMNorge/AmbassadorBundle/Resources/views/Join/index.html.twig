@@ -6,20 +6,35 @@
 
 
 {% block content %}
-	<div class="col-xs-12">
-		{{ homepage.content|raw }}
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				{{ homepage.content|raw }}
 
-		{% if invite == 'init' %}
-			<p class="alert alert-danger">Det ser ikke ut som om invitasjons-SMSen er svart på. Send den på nytt og prøv å logge inn igjen.</p>
-			<a href="{{ path('ukm_dip_login') }}" class="btn btn-block btn-success btn-sm">Jeg har svart, logg inn på nytt</a>
-		{% else %}
-			<h3>Har du ikke fått SMS?</h3>
-			<p>
-				For å bli ambassadør må du være invitert av din lokalkontakt. Du kan gjerne sende lokalkontakten din en melding om at du vil være ambassadør.
-			</p>
-			<p>
-				<a href="http://ukm.no/derdubor/" class="btn btn-sm btn-block btn-success" style="color: #fff !important;font-weight: normal !important;">Finn min lokalkontakt</a>
-			</p>
-		{% endif %}
+				{% if invite == 'init' %}
+					<p class="alert alert-danger">
+						Det ser ikke ut som om invitasjons-SMSen er svart på. Send den på nytt og prøv å logge inn igjen.
+					</p>
+					<p>
+						<a href="{{ path('ukm_dip_login') }}" class="btn btn-block btn-outline-primary btn-sm">
+							Jeg har svart, logg inn på nytt
+						</a>
+					</p>
+				{% else %}
+					<h3>
+						Har du ikke fått SMS?
+					</h3>
+					<p>
+						For å bli ambassadør må du være invitert av din lokalkontakt. 
+						Du kan gjerne sende lokalkontakten din en melding om at du vil være ambassadør.
+					</p>
+					<p>
+						<a href="http://ukm.no/derdubor/" class="btn btn-sm btn-block btn-outline-primary">
+							Finn min lokalkontakt
+						</a>
+					</p>
+				{% endif %}
+			</div>
+		</div>
 	</div>
 {% endblock %}

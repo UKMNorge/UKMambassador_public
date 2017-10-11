@@ -5,31 +5,31 @@
 {% block HTMLtitle %}{{ homepage.title }}{% endblock %}
 
 {% block content %}
-	<div class="col-xs-12 col-md-4 pull-right">
-		<div>
-			<h2>Bli ambassadør</h2>
-			<p>Vi ønsker alltid flere ambassadører velkommen!</p>
-			<a href="{{ url('ukm_dip_login') }}" class="btn btn-block btn-success">Bli ambassadør</a>
+	<div class="container">
+		<div class="row-fluid">
+			<div class="col-12 col-md-4 float-right mb-4">
+				<h2>Bli ambassadør</h2>
+				<p>Vi ønsker alltid flere ambassadører velkommen!</p>
+				<a href="{{ url('ukm_dip_login') }}" class="btn btn-block btn-outline-primary">Bli ambassadør</a>
+
+				<h2>Logg inn</h2>
+				<a href="{{ path('ukm_dip_login') }}" class="btn btn-block btn-outline-primary">Logg inn med UKMid</a>
+				<div class="clearfix"></div>
+
+			</div>
+			<div class="col-12 col-md-8 float-left">
+				{% if authenticated %}
+					<div class="alert alert-warning">
+						<strong>Du må være registrert ambassadør for å se ambassadørsiden</strong>
+						<br />
+						Du er logget inn med facebook, men vi finner ikke at du er registrert ambassadør. 
+						<br />
+						Trykk på knappen "bli ambassadør", og følg veiviseren, så er du i gang!
+					</div>
+				{% endif %}
+
+				{{ homepage.content|raw }}
+			</div>
 		</div>
-		<div>
-			<h2>Logg inn</h2>
-			<a href="{{ path('ukm_dip_login') }}" class="btn btn-block btn-success">Logg inn med UKMid</a>
-		</div>
-		<p>&nbsp;</p>
-		<div class="clearfix"></div>
-	</div>
-	<div class="clearfix visible-xs"></div>
-	<div class="col-xs-12 col-md-8">
-		{% if authenticated %}
-		<div class="alert alert-warning">
-			<strong>Du må være registrert ambassadør for å se ambassadørsiden</strong>
-			<br />
-			Du er logget inn med facebook, men vi finner ikke at du er registrert ambassadør. 
-			<br />
-			Trykk på knappen "bli ambassadør", og følg veiviseren, så er du i gang!
-		</div>
-		{% endif %}
-		{{ homepage.content|raw }}
-		<div class="clearfix"></div>
 	</div>
 {% endblock %}

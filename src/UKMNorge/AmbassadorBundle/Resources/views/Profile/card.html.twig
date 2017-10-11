@@ -1,9 +1,14 @@
-<div class="profile" style="text-align:{{align}}; margin-bottom: 15px; z-index: 10;">
-	<img src="{{ ambassador.getImage() }}" class="pull-{{align}} img img-circle" width="80" style="margin-{{ align=='right' ? 'left':'right' }}: 15px; margin-top: -4px;" />
-	<strong>{{ ambassador.getFirstname() }} {{ ambassador.getLastname() }}</strong>
-	<br />
-	UKM-ambassadør<br />
-	<a href="http://ukm.no/pl{{ ambassador.getPlid() }}/" target="_blank">{{ ambassador.getMonstringName() }}</a>
-	<br />
-	{# <a href="/logout/">Logg ut</a>&nbsp; #}
+<div class="profile">
+	<div class="row">
+		<div class="col-4">
+			<img src="{{ ambassador.getImage() }}" class="rounded-circle" width="80" />
+		</div>
+		<div class="col-8">
+			<b>{{ ambassador.getFirstname() }} {{ ambassador.getLastname() }}</b>
+			<br />
+			UKM-ambassadør
+			<br />
+			<a href="http://ukm.no/pl{{ ambassador.getPlid() }}/" target="_blank">{{ ambassador.getMonstringName() }}</a>
+		</div>
+	</div>
 </div>

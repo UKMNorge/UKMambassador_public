@@ -1,13 +1,19 @@
 {% extends "UKMAmbBundle:Design:layout.html.twig" %}
 
-{% block jumbo_content %}{{ page.title }}{% endblock %}
-{% block HTMLtitle %}{{ page.title }}{% endblock %}
-
 {% block content %}
-	{% embed "UKMAmbBundle:Design:backtohome.html.twig" %}{% endembed %}
-	<p>&nbsp;</p>
-	
-	<div class="col-xs-12">
-		{{ page.content|raw }}
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<h1>{{ page.title }}</h1>
+				<p>
+					{% embed "UKMAmbBundle:Design:backtohome.html.twig" %}{% endembed %}
+				</p>
+				{{ page.content|raw }}
+
+				<p class="mt-5">
+					{% embed "UKMAmbBundle:Design:backtohome.html.twig" %}{% endembed %}
+				</p>
+			</div>
+		</div>
 	</div>
 {% endblock %}

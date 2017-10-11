@@ -36,3 +36,13 @@ parameters:
     ukm_dip.token_salt: testsalt
     ukm_dip.user_class: UKMNorge\AmbassadorBundle\Entity\User
     ukm_dip.scope: ['kommune', 'facebook']
+    
+    ukmdesign.theme: ''
+    
+    SEOdefaultsApp:
+        title: Ambassadør
+        canonical: //ambassador.ukm.no
+        description: Vi ønsker alltid flere ambassadører velkommen!
+        siteName: UKM for ambassadører
+        section: ambassadører
+

@@ -148,7 +148,7 @@ class AmbassadorService
 	    $mail = new UKMmail();
 	    $mail->subject('Ny ambassadør registrert!');
 	    $mail->to($contacts);
-	    $mail->message('Det har blitt registrert en ny UKM-ambassadør i din kommune: '.$ambassador->getFirstName() . ' '. $ambassador->getLastName().'. Logg inn på http://ukm.no -> for arrangører hvis du vil se dine ambassadører.');
+	    $mail->message('Det har blitt registrert en ny UKM-ambassadør i din kommune: '.$ambassador->getFirstName() . ' '. $ambassador->getLastName().'. Logg inn på https://ukm.no -> for arrangører hvis du vil se dine ambassadører.');
 	    $res = $mail->ok();
 	    if (true !== $res) {
 	            error_log('AmbassadorService: Kunne ikke sende mail til lokalkontakten. PHPMAILER-error');

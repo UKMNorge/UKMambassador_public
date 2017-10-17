@@ -34,11 +34,11 @@ class WordpressThemeService
 	    $DATA = [];
 	    
     	$url = new stdClass();
-    	$url->theme_dir = 'http://ukm.no/wp-content/themes/UKMresponsive/';
-    	$url->site	= 'http://ambassador.'. UKM_HOSTNAME .'/';
+    	$url->theme_dir = 'https://ukm.no/wp-content/themes/UKMresponsive/';
+    	$url->site	= 'https://ambassador.'. UKM_HOSTNAME .'/';
     	$DATA['url'] = $url;
 
-    	define('CURRENT_UKM_DOMAIN', 'http://'. UKM_HOSTNAME);
+    	define('CURRENT_UKM_DOMAIN', 'https://'. UKM_HOSTNAME);
 		require_once($this->includePath. 'Resources/UKMresponsive/nav_top.controller.php');
 		
 		$jumbo = new stdClass();
@@ -47,7 +47,7 @@ class WordpressThemeService
 		$DATA['jumbo'] = $jumbo;
 		
 		$placeholder = new stdClass();
-		$placeholder->post = 'http://grafikk.ukm.no/placeholder/post_placeholder.png';
+		$placeholder->post = 'https://grafikk.ukm.no/placeholder/post_placeholder.png';
 		$DATA['placeholder'] = $placeholder;
 
 		return $DATA;

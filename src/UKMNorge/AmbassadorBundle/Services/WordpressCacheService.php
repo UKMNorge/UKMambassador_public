@@ -16,9 +16,9 @@ class WordpressCacheService
      */
     protected $container;
 
-	private $baseUrl		= 'http://ukm.no/ambassador/';
-	private $categoryBaseUrl= 'http://ukm.no/ambassador/kategori/';
-	private $feedUrl		= 'http://ukm.no/ambassador/feed/';
+	private $baseUrl		= 'https://ukm.no/ambassador/';
+	private $categoryBaseUrl= 'https://ukm.no/ambassador/kategori/';
+	private $feedUrl		= 'https://ukm.no/ambassador/feed/';
 	private $feedFile		= 'feed.xml';
 	
 	private $tempDir		= 'ambassador/wordpressCache/';

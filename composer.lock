@@ -2007,7 +2007,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UKMNorge/UKMresponsive.git",
-                "reference": "b87bce299240166fc4c40d35e0122b7a1a7a1fa1"
+                "reference": "362669f9a00ae8d7da8814711cf952f1bd2937d8"
             },
             "require": {
                 "mariusmandal/wpoo": "^1.0",
@@ -2033,7 +2033,7 @@
             ],
             "description": "Felles design for UKM.no og undersider",
             "homepage": "http://github.com/UKMNorge/UKMresponsive",
-            "time": "2017-10-09 10:32:26"
+            "time": "2017-10-12 22:38:26"
         },
         {
             "name": "ukmnorge/ukmdipbundle",

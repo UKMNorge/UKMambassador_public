@@ -29,12 +29,12 @@ class TokenController extends Controller
     public function loginAction() 
     {	
         if ( $this->container->getParameter('UKM_HOSTNAME') == 'ukm.dev') {
-            $this->dipURL = 'http://delta.ukm.dev/web/app_dev.php/dip/token';
-            $this->deltaLoginURL = 'http://delta.ukm.dev/web/app_dev.php/login';
+            $this->dipURL = 'https://delta.ukm.dev/web/app_dev.php/dip/token';
+            $this->deltaLoginURL = 'https://delta.ukm.dev/web/app_dev.php/login';
         } 
         else {
-            $this->dipURL = 'http://delta.ukm.no/dip/token';
-            $this->deltaLoginURL = 'http://delta.ukm.no/login';
+            $this->dipURL = 'https://delta.ukm.no/dip/token';
+            $this->deltaLoginURL = 'https://delta.ukm.no/login';
         }
 
     	require_once('UKM/curl.class.php');

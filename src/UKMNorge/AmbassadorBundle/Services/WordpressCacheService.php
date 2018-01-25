@@ -381,13 +381,12 @@ class WordpressCacheService
 			  );
 		
 		
-		$wpoo_post->url = $this->container->get('router')->generate( 'wordpress_post', $linkData );
+		if( is_object( $wpoo_post ) ) {
+			$wpoo_post->url = $this->container->get('router')->generate( 'wordpress_post', $linkData );
+		}
 		
 		return $wpoo_post;
 	}
-	
-        
-
 	
 
 	private function _wpDataDependencies() {

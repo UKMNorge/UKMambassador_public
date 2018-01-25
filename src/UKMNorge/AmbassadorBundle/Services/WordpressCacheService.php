@@ -359,32 +359,33 @@ class WordpressCacheService
 	 *
 	 * @return WPOO_Post Object
 	 */
-    private function _wpFromCache( $url ) {
+	private function _wpFromCache( $url ) {
 		$file = $this->_wpCacheName( $url );       	
-
-       	if( !$this->_cacheExist( $url ) ) {
-	       	$emptyClass = new stdClass();
-	       	$emptyClass->title = '404 - Siden ikke funnet';
-	       	$emptyClass->url = '';
-	       	$emptyClass->pubDate = '';
-	       	$emptyClass->content = 'Beklager, finner ikke siden!';
-	       	return $emptyClass;
-       	}
-       	
-       	$wpoo_post	= json_decode( file_get_contents( $this->postDataDir . $file ) );
-
-       	$postDate 	= strtotime( $wpoo_post->raw->post_date );
-       	$linkData = array( 	'year' 	=> date('Y', $postDate), 
-       						'month' => date('m', $postDate), 
-       						'date' 	=> date('d', $postDate), 
-       						'id'	=> $wpoo_post->raw->post_name
-       					  );
-
-       	$wpoo_post->url = $this->container->get('router')->generate( 'wordpress_post', $linkData );
-
-       	return $wpoo_post;
-    }
-    
+		
+		if( !$this->_cacheExist( $url ) ) {
+			$emptyClass = new stdClass();
+			$emptyClass->title = '404 - Siden ikke funnet';
+			$emptyClass->url = '';
+			$emptyClass->pubDate = '';
+			$emptyClass->content = 'Beklager, finner ikke siden!';
+			return $emptyClass;
+		}
+		
+		$wpoo_post	= json_decode( file_get_contents( $this->postDataDir . $file ) );
+		
+		$postDate 	= strtotime( $wpoo_post->raw->post_date );
+		$linkData = array( 	'year' 	=> date('Y', $postDate), 
+				'month' => date('m', $postDate), 
+				'date' 	=> date('d', $postDate), 
+				'id'	=> $wpoo_post->raw->post_name
+			  );
+		
+		
+		$wpoo_post->url = $this->container->get('router')->generate( 'wordpress_post', $linkData );
+		
+		return $wpoo_post;
+	}
+	
         
 
 	

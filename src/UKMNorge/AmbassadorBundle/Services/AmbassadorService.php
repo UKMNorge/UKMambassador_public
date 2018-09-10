@@ -136,7 +136,7 @@ class AmbassadorService
 
 	    $kommune = $k_qry->run();
 	    $contacts = '';
-	    while ($r = mysql_fetch_assoc($kommune)) {
+	    while ($r = SQL::fetch($kommune)) {
 	            $ab_id = $r['ab_id'];
 	            $c = new kontakt($ab_id);
 	            $contacts .= $c->get('email'). ', ';
